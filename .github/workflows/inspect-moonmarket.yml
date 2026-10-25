@@ -11,28 +11,22 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Inspect product model and checkout flow
+      - name: Inspect data model
         shell: bash
         run: |
           python - <<'PY'
           from urllib.request import urlopen
           import json,re
           raw=urlopen("https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html",timeout=30).read().decode("utf-8","replace")
-          start=raw.find("const DATOS_SEMILLA = ")+len("const DATOS_SEMILLA = ")
-          dec=json.JSONDecoder()
+          marker="const DATOS_SEMILLA = "
+          start=raw.find(marker)+len(marker)
           while start<len(raw) and raw[start].isspace(): start+=1
-          try:
-              seed,end=dec.raw_decode(raw,start)
-              print("SEED_END",end,"KEYS",list(seed))
-              print("SEED_CONFIG",json.dumps(seed.get("config",{}),ensure_ascii=False))
-              print("SEED_FAQS",json.dumps(seed.get("faqs",[])[:2],ensure_ascii=False)[:1000])
-              print("PRODUCTS",len(seed.get("productos",[])))
-              for p in seed.get("productos",[])[:15]:
-                  q={k:v for k,v in p.items() if k!="imagen"}
-                  q["imagen_preview"]=(p.get("imagen","")[:40] if p.get("imagen") else "")
-                  print("PRODUCT",json.dumps(q,ensure_ascii=False)[:1000])
-          except Exception as e: print("SEED_PARSE_ERROR",repr(e),raw[start:start+300])
-          for term in ["function abrirDetalle","function abrirCompra","function abrirModalCompra","function publicarDatos","function pedirClave","function comprobarClave","let moneda =","const CONFIG_DEF =","const LK_PRODUCTOS ="]:
+          seed,end=json.JSONDecoder().raw_decode(raw,start)
+          print("PRODUCT_KEYS",list(seed["productos"][0].keys()))
+          print("PRODUCT_SAMPLE",json.dumps({k:v for k,v in seed["productos"][0].items() if k not in ("imagen","tipos")},ensure_ascii=False))
+          print("TYPE_KEYS",list(seed["productos"][0]["tipos"][0].keys()))
+          print("TYPE_SAMPLE",json.dumps({k:v for k,v in seed["productos"][0]["tipos"][0].items() if k!="caracteristicas"},ensure_ascii=False))
+          for term in ["let productos =","function detalleUnidad","const CATEGORIAS","function enlaceDiscord","function renderTarjeta","function abrirDetalle","function abrirCompra(pid, tid)"]:
               i=raw.find(term)
-              if i>=0: print("SNIP",term,re.sub(r"\s+"," ",raw[i:i+2200])[:2000])
+              if i>=0: print("SNIP",term,re.sub(r"\s+"," ",raw[i:i+1700])[:1500])
           PY
