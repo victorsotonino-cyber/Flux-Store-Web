@@ -49,6 +49,37 @@
     .filter.active{background:#7c3aed;border-color:#7c3aed}
     .product-icon img{filter:drop-shadow(0 2px 7px rgba(40,18,62,.08))}
 
+
+    /* Private local catalog editor */
+    .product-art.netflix{background:linear-gradient(135deg,#fff0f0,#ffdddd)}
+    .product-art.spotify{background:linear-gradient(135deg,#e9fff0,#d0f7de)}
+    .admin-backdrop{position:fixed;inset:0;z-index:120;background:rgba(30,12,45,.72);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:15px}
+    .admin-backdrop.show{display:flex}
+    .admin-panel{background:#fff;width:min(980px,100%);max-height:92vh;overflow:auto;border-radius:24px;padding:24px;box-shadow:0 30px 110px #17062655}
+    .admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;border-bottom:1px solid #eee5f7;padding-bottom:18px;margin-bottom:17px}
+    .admin-kicker{font-size:10px;font-weight:900;letter-spacing:1.5px;color:#7c3aed}
+    .admin-head h2{font:800 25px Manrope,sans-serif;letter-spacing:-.7px;margin:7px 0 5px;color:#241433}
+    .admin-head p{font-size:12px;color:#756982;margin:0}
+    .admin-warning{background:#f7f0ff;border:1px solid #e5d5fb;color:#68418d;padding:12px 14px;border-radius:13px;line-height:1.6;font-size:11px;margin-bottom:18px}
+    .admin-global{display:grid;grid-template-columns:160px 1fr 1fr;gap:12px;margin-bottom:24px}
+    .admin-global label,.admin-field{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:800;color:#5b456e}
+    .admin-global input,.admin-global select,.admin-field input,.admin-field textarea{width:100%;border:1px solid #e5d9f2;border-radius:10px;background:#fff;padding:10px 11px;color:#241433;font:500 12px 'DM Sans',sans-serif;outline:none}
+    .admin-global input:focus,.admin-global select:focus,.admin-field input:focus,.admin-field textarea:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #ede9fe}
+    .admin-products-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .admin-products-head h3{font:800 17px Manrope,sans-serif;margin:0;color:#241433}
+    .admin-products-head span{font-size:11px;color:#867394}
+    .admin-products{display:grid;gap:13px}
+    .admin-product{border:1px solid #e9def5;border-radius:16px;padding:15px;background:linear-gradient(135deg,#fff,#fdfaff)}
+    .admin-product-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+    .admin-product-title strong{font:800 13px Manrope,sans-serif;color:#31194a}
+    .admin-product-title span{font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:#7c3aed;background:#f1e8ff;border-radius:7px;padding:6px 8px;font-weight:900}
+    .admin-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .admin-field.wide{grid-column:span 2}.admin-field.full{grid-column:1/-1}
+    .admin-field textarea{resize:vertical;min-height:55px;line-height:1.5}
+    .admin-field small{font-size:9px;color:#91829e;font-weight:500}
+    .admin-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;padding-top:18px;margin-top:18px;border-top:1px solid #eee5f7;position:sticky;bottom:-24px;background:#fff;padding-bottom:4px}
+    @media(max-width:760px){.admin-panel{padding:16px;border-radius:18px}.admin-global{grid-template-columns:1fr}.admin-fields{grid-template-columns:1fr 1fr}.admin-field.wide,.admin-field.full{grid-column:1/-1}.admin-head h2{font-size:21px}.admin-actions .btn{flex:1}.admin-product{padding:11px}}
+
   </style>
 </head>
 <body>
@@ -83,15 +114,38 @@
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modal-head"><div class="modal-title-wrap"><div class="product-icon" id="modalIcon">🛍️</div><div><h2 id="modalTitle">Producto</h2><p id="modalCategory">Categoría</p></div></div><button class="close" id="closeModal" aria-label="Cerrar">×</button></div><p id="modalDescription" style="font-size:12px;line-height:1.7;color:#667085;margin:17px 0 0"></p><hr class="modal-divider"><div id="quantityArea" hidden><div class="range-label"><label for="quantityRange" id="rangeLabel">Cantidad</label><span class="quantity-bubble" id="quantityBubble">2 unidades</span></div><input class="range" id="quantityRange" type="range" min="2" max="24" step="1" value="2"><div class="range-scale"><span id="rangeMin">2</span><span id="rangeMax">24</span></div><p class="range-hint" id="rangeHint"></p></div><div class="estimate"><div class="estimate-row"><span>Producto</span><strong id="summaryProduct">Producto</strong></div><div class="estimate-row"><span>Cantidad</span><strong id="summaryQuantity">1 unidad</strong></div><div class="estimate-row total"><span id="totalLabel">Total estimado</span><strong id="summaryTotal">Consultar</strong></div><p class="quote-note" id="priceNote">El precio final debe confirmarse con el equipo.</p></div><div class="access-note" id="ticketNote">Al continuar se abrirá Discord. Entra al servidor y abre un ticket para confirmar la compra; esta página no crea tickets automáticamente.</div><div class="modal-actions"><a class="btn" id="buyNow" href="https://discord.gg/fluxstore" target="_blank" rel="noopener">Continuar a Discord ↗</a><button class="btn secondary" id="closeModal2">Seguir viendo</button></div></div></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="admin-backdrop" id="adminBackdrop" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <section class="admin-panel">
+      <header class="admin-head"><div><span class="admin-kicker">FLUX STORE · PRIVADO</span><h2 id="adminTitle">Panel de administración</h2><p>Actualiza el catálogo y los precios.</p></div><button type="button" class="close" id="closeAdmin" aria-label="Cerrar">×</button></header>
+      <div class="admin-warning"><strong>Importante:</strong> guardar actualiza solo este navegador. Para publicar los cambios a todos los visitantes, descarga <code>products.js</code> y reemplaza el archivo en GitHub. Esta clave solo oculta el editor local; no es una autenticación segura del servidor.</div>
+      <div class="admin-global">
+        <label>Moneda<select id="adminCurrency"><option value="USD">USD · Dólares</option><option value="EUR">EUR · Euros</option><option value="GBP">GBP · Libras</option></select></label>
+        <label>Invitación de Discord<input id="adminInvite" type="url" placeholder="https://discord.gg/fluxstore"></label>
+        <label>Canal de tickets (opcional)<input id="adminTicket" type="url" placeholder="Dejar vacío para abrir la invitación"></label>
+      </div>
+      <div class="admin-products-head"><h3>Productos y precios</h3><span id="adminProductCount"></span></div>
+      <div id="adminProducts" class="admin-products"></div>
+      <div class="admin-actions"><button type="button" class="btn secondary" id="adminCancel">Cerrar</button><button type="button" class="btn secondary" id="adminExport">Descargar products.js</button><button type="button" class="btn" id="adminSave">Guardar cambios</button></div>
+    </section>
+  </div>
+
   <script src="products.js"></script>
   <script>
   (()=>{
-    const config=window.FLUX_STORE_CONFIG||{};const prices=config.prices||{};const invite=config.discordInvite||'https://discord.gg/fluxstore';const ticketUrl=config.ticketChannelUrl||'';
+    const baseConfig=window.FLUX_STORE_CONFIG||{};
+    let savedConfig={};try{savedConfig=JSON.parse(localStorage.getItem('fluxStoreAdminConfig')||'{}')||{}}catch(e){savedConfig={}}
+    const config={...baseConfig,...savedConfig,prices:{...(baseConfig.prices||{}),...(savedConfig.prices||{})},products:{...(baseConfig.products||{}),...(savedConfig.products||{})}};
+    const prices=config.prices;
+    const invite=config.discordInvite||'https://discord.gg/fluxstore';
+    const ticketUrl=config.ticketChannelUrl||'';
     ['navDiscord','heroDiscord','catalogDiscord'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=invite});
     const products=[
       {id:'youtubePremium',name:'YouTube Premium',category:'Streaming',icon:'▶️',image:'https://cdn.simpleicons.org/youtube/FF0033',artClass:'youtube',tag:'Streaming',tagClass:'blue',desc:'Disfruta de YouTube con una experiencia más cómoda. Consulta el plan y la duración disponibles.',priceKey:'youtubePremium',type:'fixed'},
       {id:'hboMax',name:'HBO Max',category:'Streaming',icon:'🎬',image:'https://cdn.simpleicons.org/max/5822B4',artClass:'max',tag:'Streaming',tagClass:'blue',desc:'Películas y series. Consulta los planes disponibles antes de confirmar tu pedido.',priceKey:'hboMax',type:'fixed'},
       {id:'disneyPlus',name:'Disney+',category:'Streaming',icon:'✨',image:'https://cdn.simpleicons.org/disneyplus/113CCF',artClass:'disney',tag:'Streaming',tagClass:'blue',desc:'Entretenimiento para disfrutar de películas y series. Sujeto a disponibilidad.',priceKey:'disneyPlus',type:'fixed'},
+      {id:'netflix',name:'Netflix Premium',category:'Streaming',icon:'🎬',image:'https://cdn.simpleicons.org/netflix/E50914',artClass:'netflix',tag:'Streaming',tagClass:'blue',desc:'Películas, series y entretenimiento. Consulta disponibilidad, duración y condiciones de la suscripción.',priceKey:'netflix',type:'fixed'},
+      {id:'spotifyPremium',name:'Spotify Premium',category:'Streaming',icon:'🎧',image:'https://cdn.simpleicons.org/spotify/1DB954',artClass:'spotify',tag:'Música',tagClass:'green',desc:'Disfruta de música y podcasts con las funciones Premium disponibles para el plan. Consulta duración y condiciones.',priceKey:'spotifyPremium',type:'fixed'},
       {id:'minecraftPremium',name:'Minecraft Premium',category:'Gaming',icon:'⛏️',image:'https://cdn.simpleicons.org/minecraft/62B47A',artClass:'minecraft',tag:'Gaming',tagClass:'green',desc:'Consulta opciones, edición y disponibilidad antes de realizar el pedido.',priceKey:'minecraftPremium',type:'fixed'},
       {id:'booster',name:'Discord Server Boost',category:'Discord',icon:'🚀',image:'https://cdn.simpleicons.org/discord/5865F2',artClass:'discord',tag:'Cantidad editable',tagClass:'purple',desc:'Elige entre 2 y 24 boosters. El importe se calcula automáticamente con el precio por booster configurado.',type:'range',min:2,max:24,step:1,unit:'boosters',priceKey:'boosterUnitPrice',formula:'unit'},
       {id:'nitroBasic',name:'Nitro Basic',category:'Discord',icon:'💠',image:'https://cdn.simpleicons.org/discord/5865F2',artClass:'discord',tag:'Discord',tagClass:'purple',desc:'Consulta la disponibilidad y duración del beneficio antes de comprar.',priceKey:'nitroBasic',type:'fixed'},
@@ -101,18 +155,92 @@
       {id:'serverPromotion',name:'Promoción de servidor',category:'Servicios',icon:'📣',image:'https://cdn.simpleicons.org/discord/5865F2',artClass:'discord',tag:'Servicio',tagClass:'blue',desc:'Consulta campañas legítimas para dar a conocer tu comunidad, como anuncios y promoción de contenido. No incluye bots ni miembros falsos.',priceKey:'serverPromotion',type:'fixed'},
       {id:'nitroAccounts',name:'Cuentas con Nitro antiguas',category:'Discord',icon:'🔒',image:'https://cdn.simpleicons.org/discord/5865F2',artClass:'discord',tag:'No disponible',tagClass:'',desc:'No ofrecemos venta de cuentas de terceros. Puedes consultar opciones legítimas de suscripción o códigos de canje.',type:'disabled'}
     ];
+    products.forEach(p=>{const saved=config.products?.[p.id];if(saved){['name','desc','category','tag','tagClass','image','min','max','step','unit'].forEach(k=>{if(saved[k]!==undefined)p[k]=saved[k]})}});
     const grid=document.getElementById('productGrid'),search=document.getElementById('searchInput'),filters=document.getElementById('filters');let activeFilter='Todos',activeProduct=null,quantity=1;
     const money=v=>new Intl.NumberFormat('es-ES',{style:'currency',currency:config.currency||'USD',maximumFractionDigits:2}).format(v);
     const priceFor=p=>p.type==='range'?(p.formula==='unit'?(validPrice(prices[p.priceKey])?prices[p.priceKey]:null):(validPrice(prices[p.priceKey])?prices[p.priceKey]:null)):(validPrice(prices[p.priceKey])?prices[p.priceKey]:null);
     const validPrice=v=>typeof v==='number'&&Number.isFinite(v)&&v>=0;
-    const cardPrice=p=>{if(p.type==='disabled')return 'No disponible';const pr=priceFor(p);return pr===null?'Consultar precio':money(p.type==='range'?(p.formula==='unit'?pr*p.min:pr):pr)};
-    function render(){const term=search.value.trim().toLocaleLowerCase('es');const result=products.filter(p=>(activeFilter==='Todos'||p.category===activeFilter)&&(`${p.name} ${p.desc} ${p.category}`.toLocaleLowerCase('es').includes(term)));document.getElementById('resultCount').textContent=`${result.length} producto${result.length===1?'':'s'}`;grid.innerHTML='';if(!result.length){grid.innerHTML='<div class="empty">No encontramos productos con esa búsqueda. Prueba otra palabra o categoría.</div>';return}result.forEach(p=>{const div=document.createElement('article');div.className='card';const tagClass=p.tagClass?` ${p.tagClass}`:'';const can=p.type!=='disabled';div.innerHTML=`<div class="product-art ${p.artClass||''}"><span class="emoji-fallback">${p.icon}</span><img src="${p.image||''}" alt="${p.name}" loading="lazy" onerror="this.style.display=\'none\';this.previousElementSibling.style.display=\'grid\'"></div><div class="card-top"><span class="tag${tagClass}">${p.tag}</span></div><h3>${p.name}</h3><p class="desc">${p.desc}</p><div class="card-bottom"><div class="price">${cardPrice(p)}<small>${p.type==='range'?(p.formula==='unit'?'desde · por booster':'desde · por 100 Robux'):p.type==='disabled'?'':prices[p.priceKey]===null||prices[p.priceKey]===undefined?'precio a consultar':'precio publicado'}</small></div><button class="buy-mini" data-product="${p.id}" ${can?'':'disabled style="opacity:.5;cursor:not-allowed"'}>${can?'Ver producto':'No disponible'}</button></div>`;grid.appendChild(div)});grid.querySelectorAll('[data-product]').forEach(btn=>btn.addEventListener('click',()=>openProduct(btn.dataset.product)))}
+    const cardPrice=p=>{if(p.type==='disabled')return 'No disponible';const pr=priceFor(p);return pr===null?'Consultar precio':money(p.type==='range'?(p.formula==='unit'?pr*p.min:p.formula==='per100'?(p.min/100)*pr:pr):pr)};
+    function render(){const term=search.value.trim().toLocaleLowerCase('es');const result=products.filter(p=>(activeFilter==='Todos'||p.category===activeFilter)&&(`${p.name} ${p.desc} ${p.category}`.toLocaleLowerCase('es').includes(term)));document.getElementById('resultCount').textContent=`${result.length} producto${result.length===1?'':'s'}`;grid.innerHTML='';if(!result.length){grid.innerHTML='<div class="empty">No encontramos productos con esa búsqueda. Prueba otra palabra o categoría.</div>';return}result.forEach(p=>{const div=document.createElement('article');div.className='card';const tagClass=p.tagClass?` ${p.tagClass}`:'';const can=p.type!=='disabled';div.innerHTML=`<div class="product-art ${p.artClass||''}"><span class="emoji-fallback" style="${p.image?'display:none':'display:grid'}">${p.icon}</span>${p.image?`<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.style.display='grid'">`:''}</div><div class="card-top"><span class="tag${tagClass}">${p.tag}</span></div><h3>${p.name}</h3><p class="desc">${p.desc}</p><div class="card-bottom"><div class="price">${cardPrice(p)}<small>${p.type==='range'?(p.formula==='unit'?'desde · por booster':'desde · por 100 Robux'):p.type==='disabled'?'':prices[p.priceKey]===null||prices[p.priceKey]===undefined?'precio a consultar':'precio publicado'}</small></div><button class="buy-mini" data-product="${p.id}" ${can?'':'disabled style="opacity:.5;cursor:not-allowed"'}>${can?'Ver producto':'No disponible'}</button></div>`;grid.appendChild(div)});grid.querySelectorAll('[data-product]').forEach(btn=>btn.addEventListener('click',()=>openProduct(btn.dataset.product)))}
     function openProduct(id){const p=products.find(x=>x.id===id);if(!p||p.type==='disabled')return;activeProduct=p;quantity=p.type==='range'?p.min:1;document.getElementById('modalIcon').innerHTML=p.image?`<span class="emoji-fallback">${p.icon}</span><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.style.display='grid'">`:p.icon;document.getElementById('modalTitle').textContent=p.name;document.getElementById('modalCategory').textContent=p.category;document.getElementById('modalDescription').textContent=p.desc;const area=document.getElementById('quantityArea');area.hidden=p.type!=='range';if(p.type==='range'){const range=document.getElementById('quantityRange');range.min=p.min;range.max=p.max;range.step=p.step;range.value=p.min;document.getElementById('rangeLabel').textContent=p.formula==='per100'?'Cantidad de Robux':'Cantidad de boosters';document.getElementById('rangeMin').textContent=p.min.toLocaleString('es-ES');document.getElementById('rangeMax').textContent=p.max.toLocaleString('es-ES');document.getElementById('rangeHint').textContent=p.formula==='per100'?'Usa la barra para seleccionar la cantidad. Cada incremento equivale a 100 Robux.':'Selecciona entre 2 y 24 boosters; el total se actualiza con cada cambio.'}document.getElementById('buyNow').href=ticketUrl||invite;document.getElementById('modalBackdrop').classList.add('show');document.body.style.overflow='hidden';updateSummary();document.getElementById('closeModal').focus()}
     function updateSummary(){const p=activeProduct;if(!p)return;const n=p.type==='range'?Number(document.getElementById('quantityRange').value):1;quantity=n;document.getElementById('quantityBubble').textContent=p.formula==='per100'?`${n.toLocaleString('es-ES')} Robux`:`${n} ${p.unit||'unidad(es)'}`;document.getElementById('summaryProduct').textContent=p.name;document.getElementById('summaryQuantity').textContent=p.type==='range'?(p.formula==='per100'?`${n.toLocaleString('es-ES')} Robux`:`${n} boosters`):'1 unidad';const pr=priceFor(p);let total=null;if(pr!==null){if(p.type==='range')total=p.formula==='per100'?(n/100)*pr:n*pr;else total=pr}document.getElementById('summaryTotal').textContent=total===null?'Consultar':money(total);document.getElementById('totalLabel').textContent=total===null?'Total por confirmar':'Total estimado';document.getElementById('priceNote').textContent=pr===null?'Este precio todavía no está configurado. Abre un ticket para consultar el importe actualizado.':'Importe estimado calculado con la configuración de la tienda. Confirma disponibilidad y precio final por ticket.';document.getElementById('buyNow').textContent='Continuar a Discord ↗'}
     function closeModal(){document.getElementById('modalBackdrop').classList.remove('show');document.body.style.overflow='';activeProduct=null}
-    document.getElementById('quantityRange').addEventListener('input',updateSummary);document.getElementById('closeModal').addEventListener('click',closeModal);document.getElementById('closeModal2').addEventListener('click',closeModal);document.getElementById('modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});search.addEventListener('input',render);filters.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;filters.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));render()}));document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{const product=products.find(p=>p.id===el.dataset.jump);if(product){setTimeout(()=>openProduct(product.id),50)}}));
+    document.getElementById('quantityRange').addEventListener('input',updateSummary);document.getElementById('closeModal').addEventListener('click',closeModal);document.getElementById('closeModal2').addEventListener('click',closeModal);document.getElementById('modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeAdmin()}});search.addEventListener('input',render);filters.addEventListener('click',e=>{const btn=e.target.closest('button[data-filter]');if(!btn)return;activeFilter=btn.dataset.filter;filters.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));render()});document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{const product=products.find(p=>p.id===el.dataset.jump);if(product){setTimeout(()=>openProduct(product.id),50)}}));
     let toastTimer;function toast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500)}
     document.getElementById('buyNow').addEventListener('click',()=>{if(activeProduct){const q=activeProduct.type==='range'?quantity:1;const pr=priceFor(activeProduct);const total=pr===null?null:(activeProduct.type==='range'?(activeProduct.formula==='per100'?q/100*pr:q*pr):pr);toast(total===null?'Se abrirá Discord para consultar el precio.':'Se abrirá Discord para confirmar el pedido y el precio final.')}});
+
+    function escapeHTML(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+    function updateFilters(){
+      const categories=['Todos',...new Set(products.map(p=>p.category).filter(Boolean))];
+      if(!categories.includes(activeFilter))activeFilter='Todos';
+      filters.innerHTML=categories.map(cat=>`<button class="filter ${cat===activeFilter?'active':''}" data-filter="${escapeHTML(cat)}">${cat==='Todos'?'Todos los productos':escapeHTML(cat)}</button>`).join('');
+    }
+    function buildAdminForm(){
+      document.getElementById('adminCurrency').value=config.currency||'USD';
+      document.getElementById('adminInvite').value=config.discordInvite||'https://discord.gg/fluxstore';
+      document.getElementById('adminTicket').value=config.ticketChannelUrl||'';
+      document.getElementById('adminProductCount').textContent=products.length+' productos';
+      document.getElementById('adminProducts').innerHTML=products.map(p=>{
+        const priceValue=p.type==='disabled'?'':(validPrice(prices[p.priceKey])?prices[p.priceKey]:'');
+        const priceLabel=p.type==='range'?(p.formula==='unit'?'Precio por booster':'Precio por cada 100 Robux'):'Precio fijo';
+        return `<article class="admin-product" data-admin-product="${p.id}">
+          <div class="admin-product-title"><strong>${escapeHTML(p.name)}</strong><span>${p.type==='disabled'?'No disponible':p.type==='range'?'Cantidad variable':escapeHTML(p.category)}</span></div>
+          <div class="admin-fields">
+            <label class="admin-field">Nombre<input data-field="name" value="${escapeHTML(p.name)}" maxlength="70"></label>
+            <label class="admin-field">Categoría<input data-field="category" value="${escapeHTML(p.category)}" maxlength="40"></label>
+            <label class="admin-field">Etiqueta<input data-field="tag" value="${escapeHTML(p.tag)}" maxlength="30"></label>
+            <label class="admin-field ${p.type==='range'?'wide':''}">${priceLabel}<input data-field="price" type="number" min="0" step="0.01" value="${priceValue}" ${p.type==='disabled'?'disabled':''} placeholder="Vacío = consultar"><small>${p.type==='disabled'?'Este producto permanece deshabilitado.':p.type==='range'?'Se usa para calcular el total.':'Importe en la moneda elegida.'}</small></label>
+            ${p.type==='range'?'<label class="admin-field">Mínimo<input data-field="min" type="number" min="1" step="1" value="'+p.min+'"></label><label class="admin-field">Máximo<input data-field="max" type="number" min="2" step="1" value="'+p.max+'"></label><label class="admin-field">Incremento<input data-field="step" type="number" min="1" step="1" value="'+p.step+'"></label>':''}
+            <label class="admin-field full">Imagen (URL)<input data-field="image" type="url" value="${escapeHTML(p.image||'')}" placeholder="URL pública directa"><small>Utiliza enlaces públicos directos a logos o imágenes de productos.</small></label>
+            <label class="admin-field full">Descripción<textarea data-field="desc" maxlength="220">${escapeHTML(p.desc)}</textarea></label>
+          </div>
+        </article>`
+      }).join('');
+    }
+    function openAdminPanel(){buildAdminForm();document.getElementById('adminBackdrop').classList.add('show');document.body.style.overflow='hidden'}
+    function closeAdmin(){const panel=document.getElementById('adminBackdrop');if(panel)panel.classList.remove('show');if(!document.getElementById('modalBackdrop').classList.contains('show'))document.body.style.overflow=''}
+    async function sha256(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));return Array.from(new Uint8Array(bytes)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+    async function launchAdmin(){
+      const storedHash=localStorage.getItem('fluxStoreAdminPinHash');
+      if(!storedHash){
+        const first=prompt('Primera vez: crea una clave de al menos 8 caracteres para el editor local.');
+        if(first===null)return;if(first.length<8){toast('La clave debe tener al menos 8 caracteres.');return}
+        const second=prompt('Repite la nueva clave:');if(first!==second){toast('Las claves no coinciden.');return}
+        localStorage.setItem('fluxStoreAdminPinHash',await sha256(first));toast('Clave local configurada.');openAdminPanel();return;
+      }
+      const entered=prompt('Clave del panel privado de FLUX STORE:');if(entered===null)return;
+      if(await sha256(entered)!==storedHash){toast('Clave incorrecta.');return}openAdminPanel();
+    }
+    function collectAdminChanges(){
+      const currency=document.getElementById('adminCurrency').value;
+      if(!['USD','EUR','GBP'].includes(currency)){toast('Selecciona una moneda válida.');return false}
+      config.currency=currency;config.discordInvite=document.getElementById('adminInvite').value.trim()||'https://discord.gg/fluxstore';config.ticketChannelUrl=document.getElementById('adminTicket').value.trim();config.products=config.products||{};
+      for(const row of document.querySelectorAll('[data-admin-product]')){
+        const id=row.dataset.adminProduct,p=products.find(x=>x.id===id);if(!p)continue;
+        const get=field=>row.querySelector('[data-field="'+field+'"]')?.value;
+        const name=get('name').trim(),category=get('category').trim(),tag=get('tag').trim();
+        if(!name||!category||!tag){toast('Cada producto necesita nombre, categoría y etiqueta.');return false}
+        const next={name,category,tag,desc:get('desc').trim(),image:get('image').trim()};
+        const priceText=get('price');
+        if(p.type!=='disabled'){const price=priceText===''?null:Number(priceText);if(price!==null&&(!Number.isFinite(price)||price<0)){toast('Los precios no pueden ser negativos.');return false}prices[p.priceKey]=price}
+        if(p.type==='range'){const min=Number(get('min')),max=Number(get('max')),step=Number(get('step'));if(!Number.isInteger(min)||!Number.isInteger(max)||!Number.isInteger(step)||min<1||max<min||step<1){toast('Revisa mínimo, máximo e incremento.');return false}next.min=min;next.max=max;next.step=step}
+        config.products[id]={...(config.products[id]||{}),...next};
+      }
+      products.forEach(p=>{const v=config.products[p.id];if(v)Object.assign(p,v)});
+      try{localStorage.setItem('fluxStoreAdminConfig',JSON.stringify(config))}catch(e){toast('El navegador no permite guardar esta configuración.');return false}
+      updateFilters();render();return true;
+    }
+    function downloadProductsJS(){
+      const content='/* FLUX STORE — configuración exportada desde el panel local. */\nwindow.FLUX_STORE_CONFIG = '+JSON.stringify(config,null,2)+';\n';
+      const blob=new Blob([content],{type:'text/javascript;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='products.js';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Descargado. Sube products.js a GitHub para publicar los cambios.');
+    }
+    document.getElementById('adminSave').addEventListener('click',()=>{if(collectAdminChanges()){toast('Guardado en este navegador. Exporta products.js para publicarlo para todos.');buildAdminForm()}});
+    document.getElementById('adminExport').addEventListener('click',()=>{if(collectAdminChanges())downloadProductsJS()});
+    document.getElementById('closeAdmin').addEventListener('click',closeAdmin);document.getElementById('adminCancel').addEventListener('click',closeAdmin);
+    document.getElementById('adminBackdrop').addEventListener('click',e=>{if(e.target.id==='adminBackdrop')closeAdmin()});
+    let brandClickCount=0,brandClickTimer;
+    document.querySelectorAll('.brand').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});brandClickCount++;clearTimeout(brandClickTimer);brandClickTimer=setTimeout(()=>{brandClickCount=0},3000);if(brandClickCount>=5){brandClickCount=0;clearTimeout(brandClickTimer);launchAdmin()}}));
+    updateFilters();
     render();
   })();
   </script>
