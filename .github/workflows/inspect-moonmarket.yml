@@ -1,0 +1,68 @@
+name: Inspect MoonMarket reference structure
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/inspect-moonmarket.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and summarize permitted reference
+        shell: bash
+        run: |
+          python - <<'PY'
+          from urllib.request import urlopen
+          from html.parser import HTMLParser
+          from collections import Counter
+          import re
+          url = "https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html"
+          raw = urlopen(url, timeout=30).read().decode("utf-8", "replace")
+          print("SOURCE_BYTES", len(raw))
+          title = re.search(r"<title[^>]*>(.*?)</title>", raw, re.I|re.S)
+          print("TITLE", re.sub(r"\\s+", " ", title.group(1)).strip() if title else "none")
+          for m in re.finditer(r'<meta[^>]+(?:name|property)=[\"\'](description|theme-color|og:title|og:description)[\"\'][^>]*>', raw, re.I):
+              print("META", re.sub(r"\\s+", " ", m.group(0))[:400])
+          styles = "\\n".join(re.findall(r"<style[^>]*>(.*?)</style>", raw, re.I|re.S))
+          colors = Counter(re.findall(r"#[0-9a-fA-F]{3,8}\\b", styles))
+          print("TOP_COLORS", colors.most_common(30))
+          css_rules = re.findall(r"([^{}]+)\\{[^{}]*\\}", styles)
+          print("CSS_SELECTORS")
+          for selector in css_rules[:120]:
+              print("CSS", re.sub(r"\\s+", " ", selector).strip()[:220])
+          print("EXTERNAL_CSS")
+          for x in re.findall(r'<link[^>]+href=[\"\']([^\"\']+)[\"\'][^>]*>', raw, re.I):
+              if ".css" in x or "font" in x: print("LINK", x[:260])
+          print("EXTERNAL_SCRIPTS")
+          for x in re.findall(r'<script[^>]+src=[\"\']([^\"\']+)', raw, re.I): print("SCRIPT", x[:260])
+          class_count=Counter()
+          for m in re.finditer(r'\\bclass=[\"\']([^\"\']+)[\"\']', raw):
+              for cls in m.group(1).split(): class_count[cls]+=1
+          print("TOP_CLASSES", class_count.most_common(100))
+          class Ref(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True); self.stack=[]; self.skip=0; self.events=0
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs); cls=a.get("class","")
+                  if tag in ("script","style"): self.skip+=1
+                  if tag in ("header","nav","main","section","aside","footer","article","button","input","form","h1","h2","h3","img"):
+                      label=(a.get("aria-label") or a.get("alt") or a.get("placeholder") or a.get("id") or "")
+                      print("DOM",tag,"class="+cls[:150],"id="+a.get("id",""),"label="+label[:100])
+                      self.events+=1
+                  self.stack.append(tag)
+              def handle_endtag(self, tag):
+                  if tag in ("script","style"): self.skip=max(0,self.skip-1)
+                  if tag in self.stack:
+                      self.stack=self.stack[:len(self.stack)-1-self.stack[::-1].index(tag)]
+              def handle_data(self,data):
+                  if not self.skip:
+                      text=re.sub(r"\\s+"," ",data).strip()
+                      if len(text)>1 and self.events<300:
+                          print("TEXT",text[:180])
+                          self.events+=1
+          print("BODY_STRUCTURE")
+          parser=Ref(); parser.feed(raw)
+          PY
