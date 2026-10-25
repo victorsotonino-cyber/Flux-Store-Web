@@ -57,3 +57,16 @@ Las tarjetas utilizan logotipos SVG de marca mediante `cdn.simpleicons.org` para
 
 ## Nota de seguridad
 La página no procesa pagos, no guarda información personal ni solicita contraseñas. Confirma disponibilidad y el precio final por Discord antes de cobrar. Para pagos reales, integra un proveedor autorizado con un backend seguro.
+
+
+## Panel secreto de edición (local)
+- Abre la web y haz clic **5 veces seguidas en el logotipo FLUX STORE**.
+- La primera vez, crea una clave local de al menos 8 caracteres. Después, esa clave abre el editor en ese navegador.
+- Desde el panel puedes cambiar nombre, categoría, etiqueta, descripción, imagen, moneda, enlace de Discord, precio y rangos de cantidades.
+- **Guardar cambios** guarda la configuración en ese navegador.
+- **Descargar products.js** exporta la configuración completa. Para publicar esos cambios para todas las personas, reemplaza el archivo `products.js` de este repositorio con el descargado y realiza el commit.
+
+**Limitación importante:** al ser una web estática, el editor no tiene autenticación real del servidor ni puede escribir en GitHub directamente. La clave local solo evita abrir el editor por accidente; no protege un panel de administración conectado a una base de datos. No introduzcas secretos, contraseñas de servicios ni tokens de acceso en el panel.
+
+## Productos
+El catálogo incluye Netflix Premium y Spotify Premium, además de YouTube Premium, Max, Disney+, Minecraft Premium, Discord y los selectores de cantidades existentes. Los precios empiezan vacíos para evitar mostrar tarifas inventadas.
