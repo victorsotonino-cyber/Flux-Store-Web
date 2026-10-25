@@ -1,0 +1,419 @@
+name: Rebuild FLUX STORE from the permitted MoonMarket template
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rebuild-flux-store.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout FLUX STORE
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Rebuild themed store
+        shell: bash
+        run: |
+          python - <<'PY'
+          from urllib.request import urlopen
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import json, re, os, subprocess
+
+          root = Path(os.environ["GITHUB_WORKSPACE"])
+          source_url = "https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html"
+          raw = urlopen(source_url, timeout=45).read().decode("utf-8", "replace")
+          if "const DATOS_SEMILLA = " not in raw or 'id="seccion-admin"' not in raw:
+              raise SystemExit("The reference structure did not validate.")
+
+          for old, new in [
+              ("Moon Market", "FLUX STORE"),
+              ("MOON MARKET", "FLUX STORE"),
+              ("MoonMarket", "FLUX STORE"),
+              ("Cuentas premium & servicios digitales", "Streaming, gaming y productos digitales"),
+              ("Premium & Digital", "CATÁLOGO DIGITAL"),
+              ("tu tienda de confianza", "tu tienda digital"),
+              ("100% Garantía", "Catálogo seleccionado"),
+              ("Compra protegida y entrega asegurada en todos tus pedidos.", "Consulta disponibilidad, precio y condiciones antes de cada pedido."),
+              ("24/7 Soporte", "Soporte por Discord"),
+              ("Atención al cliente siempre disponible, cualquier día a cualquier hora.", "Consulta dudas y pedidos directamente en nuestro Discord."),
+              ("Atención en tu idioma, atención cercana y sin complicaciones.", "Atención en español por nuestra comunidad."),
+              ("https://i.imgur.com/Go4vXwW.jpeg", "assets/flux-store.svg"),
+              ("Precio (€)", "Precio (moneda seleccionada)"),
+          ]:
+              raw = raw.replace(old, new)
+
+          purple_root = """:root {
+            --rosa:#9b6bff; --rosa-neon:#c4a3ff; --rosa-suave:#dfceff; --rosa-pastel:#f1e8ff;
+            --rojo-profundo:#1a1127; --vino:#170e25; --baya:#291642; --carmesi:#7c3aed;
+            --morado-noche:#10091a; --azul-profundo:#07050b; --azul-media:#1b102b; --azul-violeta:#2b1746;
+            --lavanda:#c4a3ff; --violeta-glow:#a855f7;
+            --fondo-1:#07050b; --fondo-2:#0e0817; --fondo-3:#171022;
+            --brillo-rosa:rgba(155,107,255,.22); --brillo-violeta:rgba(124,58,237,.2);
+            --vidrio:rgba(255,255,255,.045); --vidrio-fuerte:rgba(255,255,255,.085);
+            --borde:rgba(196,163,255,.16); --borde-rosa:rgba(196,163,255,.55);
+            --texto:#ffffff; --texto-suave:rgba(239,232,255,.72); --texto-tenue:rgba(218,205,240,.52);
+            --verde-stock:#2ee6a8; --verde-oscuro:rgba(46,230,168,.14); --rojo-stock:#ff5b7a; --rojo-oscuro:rgba(255,91,122,.14);
+            --sombra-tarjeta:0 18px 45px rgba(0,0,0,.65); --glow-rosa:0 0 30px rgba(168,85,247,.48);
+            --radio:20px; --radio-suave:14px;
+          }"""
+          raw, n_root = re.subn(r":root\s*\{[^}]*\}", lambda _: purple_root, raw, count=1, flags=re.S)
+          if n_root != 1:
+              raise SystemExit("Could not apply the purple theme.")
+
+          selector_css = """
+          .selector-box{margin:18px 0 21px;padding:17px 17px 15px;border:1px solid rgba(196,163,255,.24);border-radius:17px;background:linear-gradient(135deg,rgba(124,58,237,.16),rgba(255,255,255,.035));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+          .selector-head{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--texto);font-size:13px;font-weight:700;margin-bottom:15px}
+          .selector-head strong{font-size:12px;color:#e4d3ff;background:rgba(124,58,237,.25);border:1px solid rgba(196,163,255,.26);padding:7px 10px;border-radius:10px;white-space:nowrap}
+          #selector-rango{width:100%;accent-color:var(--rosa);cursor:pointer;display:block}
+          .selector-scale{display:flex;justify-content:space-between;color:var(--texto-tenue);font-size:11px;margin-top:7px}
+          .selector-note{color:var(--texto-tenue);font-size:11.5px;line-height:1.5;margin-top:12px}
+          .hero .cta{background:linear-gradient(135deg,#7c3aed,#a855f7);box-shadow:0 0 28px rgba(124,58,237,.32)}
+          .hero .cta:hover{filter:brightness(1.12)}
+          .admin-item .acc .mini-btn:hover,.mini-btn.verde:hover{border-color:var(--borde-rosa);color:var(--rosa-neon)}
+          @media(max-width:520px){.selector-box{padding:14px}.selector-head{align-items:flex-start;flex-direction:column}.selector-head strong{align-self:flex-start}}
+          """
+          raw = raw.replace("</style>", selector_css + "\n</style>", 1)
+          raw = raw.replace("</head>", '<link rel="icon" href="assets/flux-store.svg" type="image/svg+xml"><meta name="theme-color" content="#10091a"></head>', 1)
+          raw = raw.replace('let moneda = cargar(LK_MONEDA, "EUR");', 'let moneda = cargar(LK_MONEDA, "USD");', 1)
+
+          category_pattern = r'const CATEGORIAS\s*=\s*\[[\s\S]*?\];'
+          category_block = '''const CATEGORIAS = [
+            { id: "streaming", nombre: "Streaming" },
+            { id: "discord", nombre: "Discord" },
+            { id: "minecraft", nombre: "Minecraft" },
+            { id: "gaming", nombre: "Gaming" },
+            { id: "servicios", nombre: "Servicios" },
+            { id: "otros", nombre: "Otros" }
+          ];'''
+          raw, n_categories = re.subn(category_pattern, category_block, raw, count=1)
+          if n_categories != 1:
+              raise SystemExit("Could not update catalog categories.")
+
+          category_select = r'(<select\b(?=[^>]*\bid="e-categoria")[^>]*>)[\s\S]*?(</select>)'
+          select_content = '''\\1
+            <option value="streaming">Streaming</option>
+            <option value="discord">Discord</option>
+            <option value="minecraft">Minecraft</option>
+            <option value="gaming">Gaming</option>
+            <option value="servicios">Servicios</option>
+            <option value="otros">Otros</option>
+          \\2'''
+          raw, n_select = re.subn(category_select, select_content, raw, count=1, flags=re.I)
+          if n_select != 1:
+              raise SystemExit("Could not update admin category selector.")
+
+          config_block = 'const CONFIG_DEF = { password: "", adminEmail: "", adminPassword: "", whatsapp: "", telegram: "", discord: "https://discord.gg/fluxstore" };'
+          raw, n_config = re.subn(r'const CONFIG_DEF\s*=\s*\{[\s\S]*?\};', config_block, raw, count=1)
+          if n_config != 1:
+              raise SystemExit("Could not reset default configuration.")
+          raw = raw.replace('const LK_ADMIN = "temiShopAdmin";', 'const LK_ADMIN = "temiShopAdmin"; const LK_ADMIN_PASSWORD = "fluxStoreAdminPassword";', 1)
+
+          admin_auth = '''function comprobarClave() {
+            const input = document.getElementById("clave-input");
+            const valor = input.value;
+            const err = document.getElementById("error-clave");
+            const claveGuardada = cargar(LK_ADMIN_PASSWORD, "");
+            if (!claveGuardada) {
+              if (valor.length < 8) {
+                err.textContent = "Primera vez: escribe una clave de al menos 8 caracteres y pulsa Entrar.";
+                input.focus();
+                return;
+              }
+              const repetida = prompt("Confirma la clave nueva del panel FLUX STORE:");
+              if (repetida !== valor) {
+                err.textContent = "Las claves no coinciden. Inténtalo de nuevo.";
+                input.value = "";
+                input.focus();
+                return;
+              }
+              guardar(LK_ADMIN_PASSWORD, valor);
+              adminActivo = true;
+              guardar(LK_ADMIN, true);
+              cerrarOverlay("overlay-clave");
+              actualizarCuenta();
+              abrirAdmin();
+              return;
+            }
+            if (valor === claveGuardada) {
+              adminActivo = true;
+              guardar(LK_ADMIN, true);
+              cerrarOverlay("overlay-clave");
+              actualizarCuenta();
+              abrirAdmin();
+            } else {
+              err.textContent = "Contraseña incorrecta. Inténtalo de nuevo.";
+              input.value = "";
+              input.focus();
+            }
+          }'''
+          raw, n_auth = re.subn(r'function comprobarClave\(\)\s*\{[\s\S]*?\}(?=\s*/\* ============ Panel administración ============ \*/)', lambda _: admin_auth, raw, count=1)
+          if n_auth != 1:
+              raise SystemExit("Could not install first-run local admin key.")
+
+          save_config = '''function guardarConfig() {
+            const pw = document.getElementById("cfg-pw").value;
+            config.discord = document.getElementById("cfg-discord").value.trim();
+            if (pw) {
+              if (pw.length < 8) { alert("La clave debe tener al menos 8 caracteres."); return; }
+              guardar(LK_ADMIN_PASSWORD, pw);
+              document.getElementById("cfg-pw").value = "";
+            }
+            delete config.adminPassword;
+            guardar(LK_CONFIG, config);
+            actualizarSoporte();
+            actualizarCuenta();
+            renderAdmin();
+            alert("Configuración guardada ✓");
+          }'''
+          raw, n_save = re.subn(r'function guardarConfig\(\)\s*\{[\s\S]*?\}(?=\s*/\* ============ Cerrar overlays)', lambda _: save_config, raw, count=1)
+          if n_save != 1:
+              raise SystemExit("Could not change admin settings save behavior.")
+
+          dollar = chr(36)
+          marker = "const DATOS_SEMILLA = "
+          seed_pos = raw.find(marker)
+          if seed_pos < 0:
+              raise SystemExit("Could not find the product seed.")
+          json_start = seed_pos + len(marker)
+          while json_start < len(raw) and raw[json_start].isspace():
+              json_start += 1
+          _, json_end = json.JSONDecoder().raw_decode(raw, json_start)
+
+          images = {
+            "youtube":"https://cdn.simpleicons.org/youtube/FF0033",
+            "netflix":"https://cdn.simpleicons.org/netflix/E50914",
+            "spotify":"https://cdn.simpleicons.org/spotify/1DB954",
+            "max":"https://cdn.simpleicons.org/max/7C3AED",
+            "disney":"https://cdn.simpleicons.org/disneyplus/113CCF",
+            "minecraft":"https://cdn.simpleicons.org/minecraft/62B47A",
+            "discord":"https://cdn.simpleicons.org/discord/5865F2",
+            "roblox":"https://cdn.simpleicons.org/roblox/FFFFFF"
+          }
+          def product(pid, name, category, image, description, features, stock=True, visible=True, selector=None):
+              p = {"id":pid,"nombre":name,"descripcion":description,"imagen":image,"categoria":category,
+                   "visible":visible,"conTipos":False,"precio":None,"stock":stock,"caracteristicas":features,"tipos":[]}
+              if selector: p["selector"] = selector
+              return p
+          products = [
+            product("flux-youtube","YouTube Premium","streaming",images["youtube"],
+              "Consulta planes, duración y disponibilidad antes de realizar el pedido.",
+              "## YouTube Premium\n- Consulta la duración disponible.\n- Confirma compatibilidad y condiciones.\n- Solo se atienden opciones y códigos autorizados."),
+            product("flux-netflix","Netflix Premium","streaming",images["netflix"],
+              "Películas y series. Consulta disponibilidad, duración y condiciones.",
+              "## Netflix Premium\n- Consulta el plan y la duración disponibles.\n- Confirma compatibilidad y condiciones antes de pedir.\n- Se priorizan suscripciones y códigos autorizados."),
+            product("flux-spotify","Spotify Premium","streaming",images["spotify"],
+              "Música y podcasts con las funciones del plan Premium disponible.",
+              "## Spotify Premium\n- Consulta la duración y modalidad disponible.\n- Confirma compatibilidad y las condiciones del plan.\n- No compartas contraseñas por el chat."),
+            product("flux-hbomax","HBO Max","streaming",images["max"],
+              "Catálogo de películas y series. Consulta la opción disponible.",
+              "## HBO Max\n- Consulta duración y disponibilidad.\n- Confirma las condiciones antes de comprar."),
+            product("flux-disney","Disney+","streaming",images["disney"],
+              "Entretenimiento y series. Consulta duración y disponibilidad.",
+              "## Disney+\n- Consulta duración y disponibilidad.\n- Confirma el plan y las condiciones de uso."),
+            product("flux-minecraft","Minecraft Premium Java & Bedrock","minecraft",images["minecraft"],
+              "Consulta edición, licencia, región y disponibilidad antes de pedir.",
+              "## Minecraft Premium\n- Confirma las ediciones incluidas.\n- Verifica compatibilidad regional y requisitos.\n- Adquiere licencias o códigos autorizados."),
+            product("flux-nitro-basic","Discord Nitro Basic","discord",images["discord"],
+              "Consulta disponibilidad y elegibilidad antes de canjear.",
+              "## Discord Nitro Basic\n- Consulta duración y método de canje.\n- Confirma elegibilidad y condiciones antes de pedir."),
+            product("flux-nitro-procode","Discord Nitro Procode","discord",images["discord"],
+              "Consulta el tipo de código, duración y condiciones de canje.",
+              "## Discord Nitro Procode\n- Confirma duración y restricciones del código.\n- Los códigos deben proceder de una fuente autorizada."),
+            product("flux-nitro-3m","Discord Nitro · 3 meses","discord",images["discord"],
+              "Consulta disponibilidad, elegibilidad y método de canje.",
+              "## Discord Nitro · 3 meses\n- Confirma la duración y elegibilidad.\n- Consulta las condiciones de canje."),
+            product("flux-booster","Discord Server Boost","discord",images["discord"],
+              "Elige de 2 a 24 boosters. El total se calcula según el precio configurado por booster.",
+              "## Discord Server Boost\nElige la cantidad en el selector. El precio se configura como importe por booster; el total se calcula automáticamente.\n\nConfirma disponibilidad y condiciones antes de pagar.",
+              selector={"kind":"boosters","min":2,"max":24,"step":1}),
+            product("flux-robux","Robux","gaming",images["roblox"],
+              "Elige de 100 a 10.000 Robux. Configura el precio por cada 100 Robux.",
+              "## Robux\nSelecciona la cantidad para ver el total estimado. El precio del panel equivale a cada bloque de 100 Robux.\n\nVerifica las reglas oficiales de Roblox y utiliza métodos de compra permitidos.",
+              selector={"kind":"robux","min":100,"max":10000,"step":100}),
+            product("flux-promo","Promoción de servidor","servicios",images["discord"],
+              "Consulta campañas legítimas para dar a conocer tu comunidad.",
+              "## Promoción de servidor\n- Publicaciones y anuncios de tu comunidad.\n- Promoción legítima de eventos y contenido.\n- No incluye bots ni miembros falsos."),
+            product("flux-old-nitro-accounts","Cuentas con Nitro antiguas","discord",images["discord"],
+              "No disponible. Consulta alternativas autorizadas de suscripción o códigos.",
+              "## No disponible\nNo se publican cuentas de terceros. Consulta opciones de suscripción o códigos autorizados.",
+              stock=False,visible=False)
+          ]
+          faqs = [
+            {"id":"flux-faq-buy","pregunta":"¿Cómo realizo una compra?","respuesta":"Abre un producto, revisa sus detalles y pulsa Comprar. Se abrirá nuestro Discord para consultar el pedido por ticket."},
+            {"id":"flux-faq-price","pregunta":"¿Cómo se calcula el precio de boosters y Robux?","respuesta":"En boosters se multiplica la cantidad por el precio de un booster; en Robux se calcula el precio proporcional por cada 100 Robux."},
+            {"id":"flux-faq-delivery","pregunta":"¿Cuándo recibo mi pedido?","respuesta":"La disponibilidad y los tiempos dependen del producto. Confirma los detalles por Discord antes de pagar."},
+            {"id":"flux-faq-security","pregunta":"¿Debo compartir mi contraseña?","respuesta":"No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."}
+          ]
+          public_config = {"whatsapp":"","telegram":"","discord":"https://discord.gg/fluxstore"}
+          seed = {"config":public_config,"productos":products,"faqs":faqs}
+          raw = raw[:json_start] + json.dumps(seed,ensure_ascii=False,separators=(",",":")) + raw[json_end:]
+
+          helper_code = '''function precioSelector(producto, cantidad) {
+            if (!producto || !producto.selector) return producto ? producto.precio : null;
+            const base = producto.precio == null || producto.precio === "" ? NaN : parseFloat(producto.precio);
+            if (!Number.isFinite(base)) return null;
+            const n = Number(cantidad);
+            if (!Number.isFinite(n)) return null;
+            return producto.selector.kind === "robux" ? base * (n / 100) : base * n;
+          }
+          function etiquetaSelector(producto, cantidad) {
+            const n = Number(cantidad);
+            return producto.selector && producto.selector.kind === "robux"
+              ? n.toLocaleString("es-ES") + " Robux"
+              : n.toLocaleString("es-ES") + " booster" + (n === 1 ? "" : "s");
+          }
+          function actualizarSelectorProducto(pid, valor) {
+            const p = productos.find(x => x.id === pid);
+            if (!p || !p.selector) return;
+            const n = Number(valor);
+            const label = document.getElementById("selector-actual");
+            const price = document.getElementById("precio-detalle-total");
+            if (label) label.textContent = etiquetaSelector(p, n);
+            if (price) price.textContent = euros(precioSelector(p, n));
+          }
+          '''
+          if "function precioMinimo(producto)" not in raw:
+              raise SystemExit("Could not locate price helper.")
+          raw = raw.replace("function precioMinimo(producto)", helper_code + "\nfunction precioMinimo(producto)", 1)
+          min_fn = '''function precioMinimo(producto) {
+            if (producto.conTipos === false) {
+              const pr = producto.precio;
+              if (pr == null || isNaN(parseFloat(pr))) return null;
+              if (producto.selector) return precioSelector(producto, producto.selector.min);
+              return parseFloat(pr);
+            }
+            if (!producto.tipos || !producto.tipos.length) return null;
+            const precios = producto.tipos.filter(t => t.precio != null && !isNaN(parseFloat(t.precio)) && t.stock).map(t => parseFloat(t.precio));
+            return precios.length ? Math.min(...precios) : null;
+          }'''
+          raw,n_min = re.subn(r'function precioMinimo\(producto\)\s*\{[\s\S]*?\}(?=\s*function nuevoId)',lambda _:min_fn,raw,count=1)
+          if n_min != 1:
+              raise SystemExit("Could not patch range price calculation.")
+
+          # Add the slider to product details using a calculated HTML fragment.
+          raw_detail_start = raw.find("function abrirDetalle(pid, tid)")
+          raw_detail_end = raw.find("function abrirCompraDetalle()", raw_detail_start)
+          if raw_detail_start < 0 or raw_detail_end < 0:
+              raise SystemExit("Could not locate product detail renderer.")
+          detail = raw[raw_detail_start:raw_detail_end]
+          detail_mark = 'const caract = t.caracteristicas && String(t.caracteristicas).trim();'
+          detail_insert = '''const caract = t.caracteristicas && String(t.caracteristicas).trim();
+            const selectorHtml = p.selector ? '<div class="selector-box"><div class="selector-head"><span>' +
+              (p.selector.kind === "robux" ? "Cantidad de Robux" : "Cantidad de boosters") +
+              '</span><strong id="selector-actual">' + etiquetaSelector(p, p.selector.min) +
+              '</strong></div><input id="selector-rango" type="range" min="' + p.selector.min +
+              '" max="' + p.selector.max + '" step="' + p.selector.step + '" value="' + p.selector.min +
+              '"><div class="selector-scale"><span>' + p.selector.min.toLocaleString("es-ES") +
+              '</span><span>' + p.selector.max.toLocaleString("es-ES") +
+              '</span></div><p class="selector-note">' +
+              (p.selector.kind === "robux" ? "Importe configurado por cada 100 Robux." : "Importe configurado por booster.") +
+              '</p></div>' : "";
+            const precioDetalle = p.selector ? precioSelector(p, p.selector.min) : t.precio;'''
+          if detail_mark not in detail:
+              raise SystemExit("Could not attach selector to product detail.")
+          detail = detail.replace(detail_mark, detail_insert, 1)
+          old_price = '<div class="precio-detalle">' + dollar + '{euros(t.precio)}</div>'
+          new_price = '<div class="precio-detalle" id="precio-detalle-total">' + dollar + '{euros(precioDetalle)}</div>' + dollar + '{selectorHtml}'
+          if old_price not in detail:
+              raise SystemExit("Could not replace detail price line.")
+          detail = detail.replace(old_price, new_price, 1)
+          btn_mark = 'const btn = document.getElementById("detalle-comprar");'
+          btn_insert = 'const slider = document.getElementById("selector-rango"); if (slider) slider.addEventListener("input", function() { actualizarSelectorProducto(p.id, slider.value); }); ' + btn_mark
+          if btn_mark not in detail:
+              raise SystemExit("Could not wire selector input.")
+          detail = detail.replace(btn_mark, btn_insert, 1)
+          raw = raw[:raw_detail_start] + detail + raw[raw_detail_end:]
+
+          # Send product details and selected range to Discord; prices can be blank until configured.
+          purchase_start = raw.find("function abrirCompra(pid, tid)")
+          purchase_end = raw.find("/* ============ Acceso administrador ============ */", purchase_start)
+          if purchase_start < 0 or purchase_end < 0:
+              raise SystemExit("Could not locate purchase flow.")
+          purchase = raw[purchase_start:purchase_end]
+          purchase = purchase.replace(
+              'const sinTipos = p.conTipos === false;',
+              'const sinTipos = p.conTipos === false; const sliderCompra = document.getElementById("selector-rango"); const cantidadSelector = p.selector ? Number(sliderCompra ? sliderCompra.value : p.selector.min) : null; const precioPedido = p.selector ? precioSelector(p, cantidadSelector) : t.precio; const nombrePedido = p.selector ? p.nombre + " (" + etiquetaSelector(p, cantidadSelector) + ")" : (sinTipos ? p.nombre : t.nombre + " · " + p.nombre);',
+              1)
+          purchase = purchase.replace(
+              'document.getElementById("compra-nombre").textContent = sinTipos ? p.nombre : (t.nombre + " · " + p.nombre);',
+              'document.getElementById("compra-nombre").textContent = nombrePedido;',
+              1)
+          purchase = purchase.replace(
+              'document.getElementById("compra-precio").textContent = euros(t.precio);',
+              'document.getElementById("compra-precio").textContent = euros(precioPedido);',
+              1)
+          order_old = 'pedidoTexto = "Hola! Me interesa este producto de FLUX STORE:\\n📦 " + (sinTipos ? p.nombre : (t.nombre + " (" + p.nombre + ")")) + "\\n💰 " + euros(t.precio);'
+          order_new = 'pedidoTexto = "Hola! Me interesa este producto de FLUX STORE:\\n📦 " + nombrePedido + "\\n💰 " + euros(precioPedido);'
+          if order_old in purchase:
+              purchase = purchase.replace(order_old, order_new, 1)
+          else:
+              # Accommodate the original template's parenthesis style exactly.
+              order_old2 = 'pedidoTexto = "Hola! Me interesa este producto de FLUX STORE:\\n📦 " + (sinTipos ? p.nombre : (t.nombre + " (" + p.nombre + ")")) + "\\n💰 " + euros(t.precio);'
+              if order_old2 in purchase:
+                  purchase = purchase.replace(order_old2, order_new, 1)
+              elif "pedidoTexto =" not in purchase:
+                  raise SystemExit("Could not update order text for Discord.")
+              else:
+                  purchase = re.sub(r'pedidoTexto = "Hola! Me interesa este producto de FLUX STORE:[^;]+;', lambda _: order_new, purchase, count=1)
+          raw = raw[:purchase_start] + purchase + raw[purchase_end:]
+
+          # Ensure default credentials from the third-party template never ship.
+          if "adminPassword || " + chr(34) + "gsp@gsp10" + chr(34) in raw:
+              raise SystemExit("Insecure reference default password still exists.")
+          if "const LK_ADMIN_PASSWORD = " not in raw:
+              raise SystemExit("Local admin key configuration was not inserted.")
+
+          scripts = re.findall(r"<script\b[^>]*>(.*?)</script\s*>", raw, re.I|re.S)
+          scripts = [s for s in scripts if s.strip()]
+          js_path = root / "validate-flux-store.js"
+          js_path.write_text(scripts[-1], encoding="utf-8")
+          check = subprocess.run(["node","--check",str(js_path)],text=True,capture_output=True)
+          js_path.unlink(missing_ok=True)
+          if check.returncode:
+              print(check.stdout)
+              print(check.stderr)
+              raise SystemExit("Adapted script has a JavaScript syntax error.")
+          if "id=\"seccion-soporte\"" not in raw or "id=\"seccion-admin\"" not in raw or "id=\"selector-rango\"" not in raw:
+              raise SystemExit("Required store sections or product sliders were not generated.")
+
+          (root / "index.html").write_text(raw,encoding="utf-8")
+          public_data = {"fecha":datetime.now(timezone.utc).isoformat(),"config":public_config,"productos":products,"faqs":faqs}
+          (root / "datos.json").write_text(json.dumps(public_data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          readme = """# FLUX STORE — tienda digital
+
+          Tienda con la estructura de navegación, catálogo con imágenes, soporte, preguntas frecuentes y panel de administración de la plantilla de referencia autorizada, adaptada a la marca FLUX STORE y tema morado.
+
+          ## Catálogo
+          YouTube Premium, Netflix Premium, Spotify Premium, HBO Max, Disney+, Minecraft Premium Java & Bedrock, Discord Nitro Basic, Nitro Procode, Nitro de 3 meses, Discord Server Boost (selector 2–24), Robux (selector 100–10.000), promoción legítima de servidor y producto oculto de cuentas antiguas marcado como no disponible.
+
+          ## Panel secreto
+          Usa el pequeño icono de engranaje de la página Inicio. La primera vez debes crear una clave de al menos 8 caracteres en tu navegador. En el panel puedes crear, editar y ocultar productos, cambiar imágenes, precios, stock, preguntas frecuentes, moneda y enlace de Discord.
+          La clave se guarda en ese navegador, no en el servidor. Esta web estática no proporciona autenticación segura de servidor; no uses aquí contraseñas de otros servicios.
+
+          ## Publicar cambios del panel
+          Pulsa Publicar cambios (datos.json), descarga el archivo y reemplaza el archivo datos.json en la raíz del repositorio. Luego haz commit. La web leerá la configuración pública actualizada cuando GitHub Pages publique el archivo.
+
+          ## Precios de los selectores
+          En Discord Server Boost, el precio del producto equivale a un booster. En Robux, el precio equivale a cada bloque de 100 Robux. Los precios inicialmente están en blanco para que puedas fijar tus tarifas.
+
+          ## Pedidos
+          Los botones llevan a https://discord.gg/fluxstore y copian el resumen del pedido. No procesa pagos directamente ni crea el ticket automáticamente: el cliente debe abrir un ticket en Discord.
+          """
+          (root / "README.md").write_text(readme,encoding="utf-8")
+          print("ADAPTED_BYTES",len(raw))
+          print("PRODUCT_COUNT",len(products))
+          print("JS_SYNTAX_VALID")
+          PY
+      - name: Commit adapted website and data
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html datos.json README.md
+          git commit -m "Rebuild FLUX STORE from permitted template in purple"
+          git push
