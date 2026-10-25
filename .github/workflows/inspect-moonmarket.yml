@@ -19,50 +19,37 @@ jobs:
           from html.parser import HTMLParser
           from collections import Counter
           import re
-          url = "https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html"
-          raw = urlopen(url, timeout=30).read().decode("utf-8", "replace")
+          raw = urlopen("https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html", timeout=30).read().decode("utf-8", "replace")
           print("SOURCE_BYTES", len(raw))
           title = re.search(r"<title[^>]*>(.*?)</title>", raw, re.I|re.S)
-          print("TITLE", re.sub(r"\\s+", " ", title.group(1)).strip() if title else "none")
-          for m in re.finditer(r'<meta[^>]+(?:name|property)=[\"\'](description|theme-color|og:title|og:description)[\"\'][^>]*>', raw, re.I):
-              print("META", re.sub(r"\\s+", " ", m.group(0))[:400])
-          styles = "\\n".join(re.findall(r"<style[^>]*>(.*?)</style>", raw, re.I|re.S))
-          colors = Counter(re.findall(r"#[0-9a-fA-F]{3,8}\\b", styles))
-          print("TOP_COLORS", colors.most_common(30))
-          css_rules = re.findall(r"([^{}]+)\\{[^{}]*\\}", styles)
-          print("CSS_SELECTORS")
-          for selector in css_rules[:120]:
-              print("CSS", re.sub(r"\\s+", " ", selector).strip()[:220])
-          print("EXTERNAL_CSS")
-          for x in re.findall(r'<link[^>]+href=[\"\']([^\"\']+)[\"\'][^>]*>', raw, re.I):
-              if ".css" in x or "font" in x: print("LINK", x[:260])
-          print("EXTERNAL_SCRIPTS")
-          for x in re.findall(r'<script[^>]+src=[\"\']([^\"\']+)', raw, re.I): print("SCRIPT", x[:260])
-          class_count=Counter()
-          for m in re.finditer(r'\\bclass=[\"\']([^\"\']+)[\"\']', raw):
-              for cls in m.group(1).split(): class_count[cls]+=1
-          print("TOP_CLASSES", class_count.most_common(100))
+          print("TITLE", re.sub(r"\s+", " ", title.group(1)).strip() if title else "none")
+          styles = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", raw, re.I|re.S))
+          print("CSS_BYTES",len(styles))
+          print("CSS_COLORS",Counter(re.findall(r"#[0-9a-fA-F]{3,8}\b",styles)).most_common(35))
+          selectors = re.findall(r"([^{}]+)\{[^{}]*\}", styles)
+          print("CSS_SELECTORS",len(selectors))
+          for selector in selectors[:100]: print("CSS",re.sub(r"\s+"," ",selector).strip()[:160])
+          print("IMAGES")
+          for m in re.finditer(r'<img\b[^>]*>',raw,re.I):
+              tag=m.group(0); src=re.search(r'\bsrc=["\']([^"\']*)',tag,re.I); alt=re.search(r'\balt=["\']([^"\']*)',tag,re.I)
+              print("IMG", (alt.group(1) if alt else "")[:70], (src.group(1)[:180] if src else "no-src"))
+          print("CODE_MATCHES")
+          for term in ["productosIniciales","const productos","productos =","localStorage","clave-admin","clave-input","seccion-admin","function render","function guardar","function cargar","datos.json","productos-store","WHATSAPP","discord.gg","categoria","tipo","stock","precio"]:
+              print("TERM",term,"COUNT",len(list(re.finditer(re.escape(term),raw,re.I))))
+              for m in list(re.finditer(re.escape(term),raw,re.I))[:3]:
+                  print("SNIP",re.sub(r"\s+"," ",raw[max(0,m.start()-220):min(len(raw),m.end()+420)])[:700])
           class Ref(HTMLParser):
-              def __init__(self):
-                  super().__init__(convert_charrefs=True); self.stack=[]; self.skip=0; self.events=0
-              def handle_starttag(self, tag, attrs):
-                  a=dict(attrs); cls=a.get("class","")
+              def __init__(self): super().__init__(convert_charrefs=True); self.skip=0; self.events=0
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
                   if tag in ("script","style"): self.skip+=1
                   if tag in ("header","nav","main","section","aside","footer","article","button","input","form","h1","h2","h3","img"):
-                      label=(a.get("aria-label") or a.get("alt") or a.get("placeholder") or a.get("id") or "")
-                      print("DOM",tag,"class="+cls[:150],"id="+a.get("id",""),"label="+label[:100])
-                      self.events+=1
-                  self.stack.append(tag)
-              def handle_endtag(self, tag):
+                      print("DOM",tag,"class="+a.get("class","")[:100],"id="+a.get("id",""),"type="+a.get("type",""),"src="+a.get("src","")[:100])
+              def handle_endtag(self,tag):
                   if tag in ("script","style"): self.skip=max(0,self.skip-1)
-                  if tag in self.stack:
-                      self.stack=self.stack[:len(self.stack)-1-self.stack[::-1].index(tag)]
               def handle_data(self,data):
-                  if not self.skip:
-                      text=re.sub(r"\\s+"," ",data).strip()
-                      if len(text)>1 and self.events<300:
-                          print("TEXT",text[:180])
-                          self.events+=1
-          print("BODY_STRUCTURE")
-          parser=Ref(); parser.feed(raw)
+                  text=re.sub(r"\s+"," ",data).strip()
+                  if not self.skip and len(text)>1 and self.events<150: print("TEXT",text[:160]); self.events+=1
+          print("STRUCTURE")
+          Ref().feed(raw)
           PY
