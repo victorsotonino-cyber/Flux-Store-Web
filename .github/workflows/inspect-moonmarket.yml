@@ -27,13 +27,12 @@ jobs:
               print("SEED_CONFIG",json.dumps(seed.get("config",{}),ensure_ascii=False))
               print("SEED_FAQS",json.dumps(seed.get("faqs",[])[:2],ensure_ascii=False)[:1000])
               print("PRODUCTS",len(seed.get("productos",[])))
-              for p in seed.get("productos",[])[:20]:
+              for p in seed.get("productos",[])[:15]:
                   q={k:v for k,v in p.items() if k!="imagen"}
                   q["imagen_preview"]=(p.get("imagen","")[:40] if p.get("imagen") else "")
                   print("PRODUCT",json.dumps(q,ensure_ascii=False)[:1000])
           except Exception as e: print("SEED_PARSE_ERROR",repr(e),raw[start:start+300])
-          for term in ["function abrirDetalle","function abrirCompra","function renderCompra","function cerrarCompra","function actualizarCompra","function confirmarCompra","function enviarPedido","function publicarDatos","function pedirClave","function comprobarClave","let moneda =","const CONFIG_DEF =","const LK_PRODUCTOS ="]:
+          for term in ["function abrirDetalle","function abrirCompra","function abrirModalCompra","function publicarDatos","function pedirClave","function comprobarClave","let moneda =","const CONFIG_DEF =","const LK_PRODUCTOS ="]:
               i=raw.find(term)
-              if i>=0: print("SNIP",term,re.sub(r"\s+"," ",raw[i:i+2800])[:2600])
-          print("URLS",[(x[:160]) for x in re.findall(r"https?://[^\\s\\"'<>]+",raw) if "discord.gg" in x][:10])
+              if i>=0: print("SNIP",term,re.sub(r"\s+"," ",raw[i:i+2200])[:2000])
           PY
