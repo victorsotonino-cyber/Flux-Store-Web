@@ -1,0 +1,50 @@
+name: Prepare FLUX STORE website files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Flux-Store-Web (1).zip"
+      - ".github/workflows/unpack-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Extract website into repository root
+        shell: bash
+        run: |
+          ARCHIVE="Flux-Store-Web (1).zip"
+          if [ ! -f "$ARCHIVE" ]; then
+            echo "Project archive not present; nothing to extract."
+            exit 0
+          fi
+
+          mkdir -p /tmp/flux-store-web
+          unzip -q "$ARCHIVE" -d /tmp/flux-store-web
+          if [ ! -f /tmp/flux-store-web/Flux-Store-Web/index.html ]; then
+            echo "Expected index.html was not found in the uploaded archive."
+            exit 1
+          fi
+
+          cp -a /tmp/flux-store-web/Flux-Store-Web/. .
+          rm -f "$ARCHIVE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html products.js README.md assets/
+          if git diff --cached --quiet; then
+            echo "Website files already match; no commit required."
+          else
+            git commit -m "Add FLUX STORE website files to repository root"
+            git push
+          fi
