@@ -1,0 +1,213 @@
+{
+  "fecha": "2026-10-25T23:52:50.314315+00:00",
+  "config": {
+    "whatsapp": "",
+    "telegram": "",
+    "discord": "https://discord.gg/fluxstore"
+  },
+  "productos": [
+    {
+      "id": "flux-youtube",
+      "nombre": "YouTube Premium",
+      "descripcion": "Consulta planes, duración y disponibilidad antes de realizar el pedido.",
+      "imagen": "https://cdn.simpleicons.org/youtube/FF0033",
+      "categoria": "streaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## YouTube Premium\n- Consulta la duración disponible.\n- Confirma compatibilidad y condiciones.\n- Solo se atienden opciones y códigos autorizados.",
+      "tipos": []
+    },
+    {
+      "id": "flux-netflix",
+      "nombre": "Netflix Premium",
+      "descripcion": "Películas y series. Consulta disponibilidad, duración y condiciones.",
+      "imagen": "https://cdn.simpleicons.org/netflix/E50914",
+      "categoria": "streaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Netflix Premium\n- Consulta el plan y la duración disponibles.\n- Confirma compatibilidad y condiciones antes de pedir.\n- Se priorizan suscripciones y códigos autorizados.",
+      "tipos": []
+    },
+    {
+      "id": "flux-spotify",
+      "nombre": "Spotify Premium",
+      "descripcion": "Música y podcasts con las funciones del plan Premium disponible.",
+      "imagen": "https://cdn.simpleicons.org/spotify/1DB954",
+      "categoria": "streaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Spotify Premium\n- Consulta la duración y modalidad disponible.\n- Confirma compatibilidad y las condiciones del plan.\n- No compartas contraseñas por el chat.",
+      "tipos": []
+    },
+    {
+      "id": "flux-hbomax",
+      "nombre": "HBO Max",
+      "descripcion": "Catálogo de películas y series. Consulta la opción disponible.",
+      "imagen": "https://cdn.simpleicons.org/max/7C3AED",
+      "categoria": "streaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## HBO Max\n- Consulta duración y disponibilidad.\n- Confirma las condiciones antes de comprar.",
+      "tipos": []
+    },
+    {
+      "id": "flux-disney",
+      "nombre": "Disney+",
+      "descripcion": "Entretenimiento y series. Consulta duración y disponibilidad.",
+      "imagen": "https://cdn.simpleicons.org/disneyplus/113CCF",
+      "categoria": "streaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Disney+\n- Consulta duración y disponibilidad.\n- Confirma el plan y las condiciones de uso.",
+      "tipos": []
+    },
+    {
+      "id": "flux-minecraft",
+      "nombre": "Minecraft Premium Java & Bedrock",
+      "descripcion": "Consulta edición, licencia, región y disponibilidad antes de pedir.",
+      "imagen": "https://cdn.simpleicons.org/minecraft/62B47A",
+      "categoria": "minecraft",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Minecraft Premium\n- Confirma las ediciones incluidas.\n- Verifica compatibilidad regional y requisitos.\n- Adquiere licencias o códigos autorizados.",
+      "tipos": []
+    },
+    {
+      "id": "flux-nitro-basic",
+      "nombre": "Discord Nitro Basic",
+      "descripcion": "Consulta disponibilidad y elegibilidad antes de canjear.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "discord",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Discord Nitro Basic\n- Consulta duración y método de canje.\n- Confirma elegibilidad y condiciones antes de pedir.",
+      "tipos": []
+    },
+    {
+      "id": "flux-nitro-procode",
+      "nombre": "Discord Nitro Procode",
+      "descripcion": "Consulta el tipo de código, duración y condiciones de canje.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "discord",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Discord Nitro Procode\n- Confirma duración y restricciones del código.\n- Los códigos deben proceder de una fuente autorizada.",
+      "tipos": []
+    },
+    {
+      "id": "flux-nitro-3m",
+      "nombre": "Discord Nitro · 3 meses",
+      "descripcion": "Consulta disponibilidad, elegibilidad y método de canje.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "discord",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Discord Nitro · 3 meses\n- Confirma la duración y elegibilidad.\n- Consulta las condiciones de canje.",
+      "tipos": []
+    },
+    {
+      "id": "flux-booster",
+      "nombre": "Discord Server Boost",
+      "descripcion": "Elige de 2 a 24 boosters. El total se calcula según el precio configurado por booster.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "discord",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Discord Server Boost\nElige la cantidad en el selector. El precio se configura como importe por booster; el total se calcula automáticamente.\n\nConfirma disponibilidad y condiciones antes de pagar.",
+      "tipos": [],
+      "selector": {
+        "kind": "boosters",
+        "min": 2,
+        "max": 24,
+        "step": 1
+      }
+    },
+    {
+      "id": "flux-robux",
+      "nombre": "Robux",
+      "descripcion": "Elige de 100 a 10.000 Robux. Configura el precio por cada 100 Robux.",
+      "imagen": "https://cdn.simpleicons.org/roblox/FFFFFF",
+      "categoria": "gaming",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Robux\nSelecciona la cantidad para ver el total estimado. El precio del panel equivale a cada bloque de 100 Robux.\n\nVerifica las reglas oficiales de Roblox y utiliza métodos de compra permitidos.",
+      "tipos": [],
+      "selector": {
+        "kind": "robux",
+        "min": 100,
+        "max": 10000,
+        "step": 100
+      }
+    },
+    {
+      "id": "flux-promo",
+      "nombre": "Promoción de servidor",
+      "descripcion": "Consulta campañas legítimas para dar a conocer tu comunidad.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "servicios",
+      "visible": true,
+      "conTipos": false,
+      "precio": null,
+      "stock": true,
+      "caracteristicas": "## Promoción de servidor\n- Publicaciones y anuncios de tu comunidad.\n- Promoción legítima de eventos y contenido.\n- No incluye bots ni miembros falsos.",
+      "tipos": []
+    },
+    {
+      "id": "flux-old-nitro-accounts",
+      "nombre": "Cuentas con Nitro antiguas",
+      "descripcion": "No disponible. Consulta alternativas autorizadas de suscripción o códigos.",
+      "imagen": "https://cdn.simpleicons.org/discord/5865F2",
+      "categoria": "discord",
+      "visible": false,
+      "conTipos": false,
+      "precio": null,
+      "stock": false,
+      "caracteristicas": "## No disponible\nNo se publican cuentas de terceros. Consulta opciones de suscripción o códigos autorizados.",
+      "tipos": []
+    }
+  ],
+  "faqs": [
+    {
+      "id": "flux-faq-buy",
+      "pregunta": "¿Cómo realizo una compra?",
+      "respuesta": "Abre un producto, revisa sus detalles y pulsa Comprar. Se abrirá nuestro Discord para consultar el pedido por ticket."
+    },
+    {
+      "id": "flux-faq-price",
+      "pregunta": "¿Cómo se calcula el precio de boosters y Robux?",
+      "respuesta": "En boosters se multiplica la cantidad por el precio de un booster; en Robux se calcula el precio proporcional por cada 100 Robux."
+    },
+    {
+      "id": "flux-faq-delivery",
+      "pregunta": "¿Cuándo recibo mi pedido?",
+      "respuesta": "La disponibilidad y los tiempos dependen del producto. Confirma los detalles por Discord antes de pagar."
+    },
+    {
+      "id": "flux-faq-security",
+      "pregunta": "¿Debo compartir mi contraseña?",
+      "respuesta": "No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."
+    }
+  ]
+}
