@@ -3,7 +3,7 @@
 Web estática responsive de catálogo digital. Se puede publicar en GitHub Pages o Render Static Sites.
 
 ## Incluye
-- Diseño responsive, en español, blanco con acentos azules.
+- Diseño responsive, en español, con tema violeta/lila, degradados suaves y tarjetas visuales de productos.
 - Catálogo con búsqueda y filtros por categoría.
 - Fichas de producto con detalle y modal de compra.
 - Selector de 2–24 boosters con cálculo en vivo por booster.
@@ -51,6 +51,9 @@ La web no puede crear un ticket de Discord por sí sola. Para creación automát
 
 ## Publicar en Render
 Crea un **Static Site** desde este repositorio. No necesita build command; usa `index.html` como contenido de la raíz / publish directory `.` según la configuración disponible.
+
+## Imágenes de productos
+Las tarjetas utilizan logotipos SVG de marca mediante `cdn.simpleicons.org` para YouTube, Max, Disney+, Minecraft, Discord y Roblox. Requieren conexión a Internet; si falla una imagen, la tarjeta muestra un icono de respaldo.
 
 ## Nota de seguridad
 La página no procesa pagos, no guarda información personal ni solicita contraseñas. Confirma disponibilidad y el precio final por Discord antes de cobrar. Para pagos reales, integra un proveedor autorizado con un backend seguro.
