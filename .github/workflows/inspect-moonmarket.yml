@@ -11,40 +11,29 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Download and summarize permitted reference
+      - name: Inspect product model and checkout flow
         shell: bash
         run: |
           python - <<'PY'
           from urllib.request import urlopen
-          from html.parser import HTMLParser
-          from collections import Counter
-          import re,json
+          import json,re
           raw=urlopen("https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html",timeout=30).read().decode("utf-8","replace")
-          print("SOURCE_BYTES",len(raw))
-          style=re.search(r"<style[^>]*>(.*?)</style>",raw,re.I|re.S)
-          styles=style.group(1) if style else ""
-          root=re.search(r":root\s*\{([^}]+)\}",styles)
-          print("ROOT_CSS",re.sub(r"\s+"," ",root.group(0))[:3000] if root else "none")
-          for term in ["const DATOS_SEMILLA =","function renderTarjeta","function renderTipo","function precioMinimo","function tieneStock","function guardarProducto","function publicarDatos","function pedirClave","function comprobarClave","function guardarConfig","function renderAdmin","function irA"]:
-              m=re.search(re.escape(term),raw)
-              print("FUNCTION",term,"FOUND",bool(m))
-              if m:
-                  print("FUNCTION_SNIP",re.sub(r"\s+"," ",raw[m.start():m.start()+2600])[:2400])
-          m=re.search(r"const DATOS_SEMILLA\s*=\s*(\{.*?\});\s*/\*\s*={4,}\s*Datos publicos",raw,re.S)
-          if m:
-              try:
-                  seed=json.loads(m.group(1))
-                  print("SEED_KEYS",list(seed.keys()))
-                  print("CONFIG_KEYS",list(seed.get("config",{}).keys()))
-                  print("FAQ_EXAMPLE",json.dumps(seed.get("faqs",[])[:2],ensure_ascii=False)[:1500])
-                  print("PRODUCT_COUNT",len(seed.get("productos",[])))
-                  for p in seed.get("productos",[])[:12]:
-                      q={k:(v if k!="imagen" else (str(v)[:100] if v else "")) for k,v in p.items()}
-                      print("PRODUCT_SCHEMA",json.dumps(q,ensure_ascii=False)[:1800])
-              except Exception as e: print("SEED_JSON_ERROR",type(e).__name__,str(e)[:500],m.group(1)[:300])
-          else: print("SEED_MATCH_NOT_FOUND")
-          print("ADMIN_PASSWORD_SNIPS")
-          for term in ['config.adminPassword || "gsp@gsp10"','const CONFIG_DEF','function comprobarClave','function guardarConfig']:
+          start=raw.find("const DATOS_SEMILLA = ")+len("const DATOS_SEMILLA = ")
+          dec=json.JSONDecoder()
+          while start<len(raw) and raw[start].isspace(): start+=1
+          try:
+              seed,end=dec.raw_decode(raw,start)
+              print("SEED_END",end,"KEYS",list(seed))
+              print("SEED_CONFIG",json.dumps(seed.get("config",{}),ensure_ascii=False))
+              print("SEED_FAQS",json.dumps(seed.get("faqs",[])[:2],ensure_ascii=False)[:1000])
+              print("PRODUCTS",len(seed.get("productos",[])))
+              for p in seed.get("productos",[])[:20]:
+                  q={k:v for k,v in p.items() if k!="imagen"}
+                  q["imagen_preview"]=(p.get("imagen","")[:40] if p.get("imagen") else "")
+                  print("PRODUCT",json.dumps(q,ensure_ascii=False)[:1000])
+          except Exception as e: print("SEED_PARSE_ERROR",repr(e),raw[start:start+300])
+          for term in ["function abrirDetalle","function abrirCompra","function renderCompra","function cerrarCompra","function actualizarCompra","function confirmarCompra","function enviarPedido","function publicarDatos","function pedirClave","function comprobarClave","let moneda =","const CONFIG_DEF =","const LK_PRODUCTOS ="]:
               i=raw.find(term)
-              if i>=0: print("ADMIN",re.sub(r"\s+"," ",raw[max(0,i-400):i+1400])[:1600])
+              if i>=0: print("SNIP",term,re.sub(r"\s+"," ",raw[i:i+2800])[:2600])
+          print("URLS",[(x[:160]) for x in re.findall(r"https?://[^\\s\\"'<>]+",raw) if "discord.gg" in x][:10])
           PY
