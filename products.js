@@ -16,6 +16,8 @@ window.FLUX_STORE_CONFIG = {
     youtubePremium: null,
     hboMax: null,
     disneyPlus: null,
+    netflix: null,
+    spotifyPremium: null,
     minecraftPremium: null,
     nitroBasic: null,
     nitroProcode: null,
