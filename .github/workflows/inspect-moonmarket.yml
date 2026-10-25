@@ -18,38 +18,33 @@ jobs:
           from urllib.request import urlopen
           from html.parser import HTMLParser
           from collections import Counter
-          import re
-          raw = urlopen("https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html", timeout=30).read().decode("utf-8", "replace")
-          print("SOURCE_BYTES", len(raw))
-          title = re.search(r"<title[^>]*>(.*?)</title>", raw, re.I|re.S)
-          print("TITLE", re.sub(r"\s+", " ", title.group(1)).strip() if title else "none")
-          styles = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", raw, re.I|re.S))
-          print("CSS_BYTES",len(styles))
-          print("CSS_COLORS",Counter(re.findall(r"#[0-9a-fA-F]{3,8}\b",styles)).most_common(35))
-          selectors = re.findall(r"([^{}]+)\{[^{}]*\}", styles)
-          print("CSS_SELECTORS",len(selectors))
-          for selector in selectors[:100]: print("CSS",re.sub(r"\s+"," ",selector).strip()[:160])
-          print("IMAGES")
-          for m in re.finditer(r'<img\b[^>]*>',raw,re.I):
-              tag=m.group(0); src=re.search(r'\bsrc=["\']([^"\']*)',tag,re.I); alt=re.search(r'\balt=["\']([^"\']*)',tag,re.I)
-              print("IMG", (alt.group(1) if alt else "")[:70], (src.group(1)[:180] if src else "no-src"))
-          print("CODE_MATCHES")
-          for term in ["productosIniciales","const productos","productos =","localStorage","clave-admin","clave-input","seccion-admin","function render","function guardar","function cargar","datos.json","productos-store","WHATSAPP","discord.gg","categoria","tipo","stock","precio"]:
-              print("TERM",term,"COUNT",len(list(re.finditer(re.escape(term),raw,re.I))))
-              for m in list(re.finditer(re.escape(term),raw,re.I))[:3]:
-                  print("SNIP",re.sub(r"\s+"," ",raw[max(0,m.start()-220):min(len(raw),m.end()+420)])[:700])
-          class Ref(HTMLParser):
-              def __init__(self): super().__init__(convert_charrefs=True); self.skip=0; self.events=0
-              def handle_starttag(self,tag,attrs):
-                  a=dict(attrs)
-                  if tag in ("script","style"): self.skip+=1
-                  if tag in ("header","nav","main","section","aside","footer","article","button","input","form","h1","h2","h3","img"):
-                      print("DOM",tag,"class="+a.get("class","")[:100],"id="+a.get("id",""),"type="+a.get("type",""),"src="+a.get("src","")[:100])
-              def handle_endtag(self,tag):
-                  if tag in ("script","style"): self.skip=max(0,self.skip-1)
-              def handle_data(self,data):
-                  text=re.sub(r"\s+"," ",data).strip()
-                  if not self.skip and len(text)>1 and self.events<150: print("TEXT",text[:160]); self.events+=1
-          print("STRUCTURE")
-          Ref().feed(raw)
+          import re,json
+          raw=urlopen("https://raw.githubusercontent.com/Teminxx/MoonMarket/main/index.html",timeout=30).read().decode("utf-8","replace")
+          print("SOURCE_BYTES",len(raw))
+          style=re.search(r"<style[^>]*>(.*?)</style>",raw,re.I|re.S)
+          styles=style.group(1) if style else ""
+          root=re.search(r":root\s*\{([^}]+)\}",styles)
+          print("ROOT_CSS",re.sub(r"\s+"," ",root.group(0))[:3000] if root else "none")
+          for term in ["const DATOS_SEMILLA =","function renderTarjeta","function renderTipo","function precioMinimo","function tieneStock","function guardarProducto","function publicarDatos","function pedirClave","function comprobarClave","function guardarConfig","function renderAdmin","function irA"]:
+              m=re.search(re.escape(term),raw)
+              print("FUNCTION",term,"FOUND",bool(m))
+              if m:
+                  print("FUNCTION_SNIP",re.sub(r"\s+"," ",raw[m.start():m.start()+2600])[:2400])
+          m=re.search(r"const DATOS_SEMILLA\s*=\s*(\{.*?\});\s*/\*\s*={4,}\s*Datos publicos",raw,re.S)
+          if m:
+              try:
+                  seed=json.loads(m.group(1))
+                  print("SEED_KEYS",list(seed.keys()))
+                  print("CONFIG_KEYS",list(seed.get("config",{}).keys()))
+                  print("FAQ_EXAMPLE",json.dumps(seed.get("faqs",[])[:2],ensure_ascii=False)[:1500])
+                  print("PRODUCT_COUNT",len(seed.get("productos",[])))
+                  for p in seed.get("productos",[])[:12]:
+                      q={k:(v if k!="imagen" else (str(v)[:100] if v else "")) for k,v in p.items()}
+                      print("PRODUCT_SCHEMA",json.dumps(q,ensure_ascii=False)[:1800])
+              except Exception as e: print("SEED_JSON_ERROR",type(e).__name__,str(e)[:500],m.group(1)[:300])
+          else: print("SEED_MATCH_NOT_FOUND")
+          print("ADMIN_PASSWORD_SNIPS")
+          for term in ['config.adminPassword || "gsp@gsp10"','const CONFIG_DEF','function comprobarClave','function guardarConfig']:
+              i=raw.find(term)
+              if i>=0: print("ADMIN",re.sub(r"\s+"," ",raw[max(0,i-400):i+1400])[:1600])
           PY
