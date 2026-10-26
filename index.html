@@ -1439,14 +1439,20 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
     void logo.offsetWidth;
     logo.classList.add("logo-tap");
     toast.textContent = desbloqueado
-      ? "✦ ACCESO AL PANEL DE ADMINISTRADOR ✦"
+      ? "✦ PANEL DE ADMINISTRADOR DESBLOQUEADO ✦"
       : "ACCESO ADMIN · " + fluxLogoClickCount + "/10 clics";
     toast.classList.add("visible");
     if (fluxToastTimer) clearTimeout(fluxToastTimer);
     fluxToastTimer = setTimeout(() => {
       toast.classList.remove("visible");
-      if (desbloqueado) pedirClave();
-    }, desbloqueado ? 650 : 850);
+      if (desbloqueado) {
+        adminActivo = true;
+        guardar(LK_ADMIN, true);
+        cerrarOverlay("overlay-clave");
+        actualizarCuenta();
+        abrirAdmin();
+      }
+    }, desbloqueado ? 400 : 850);
     if (desbloqueado) {
       fluxLogoClickCount = 0;
       logo.classList.remove("logo-boost");
