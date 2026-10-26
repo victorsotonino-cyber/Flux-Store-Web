@@ -1138,6 +1138,38 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
  .hero,.sello,.hero .cta { transition:none!important; }
 }
 
+
+/* ===== Guía de compra y formulario por producto ===== */
+.flux-howto { max-width:1220px; margin:34px auto 8px; padding:clamp(22px,3vw,36px); border:1px solid rgba(196,163,255,.16); border-radius:26px; background:linear-gradient(145deg,rgba(22,13,36,.88),rgba(9,6,15,.88)); }
+.flux-howto-heading { max-width:690px; margin-bottom:22px; }
+.flux-kicker { display:inline-block; margin-bottom:10px; color:#c4a3ff; font-size:10px; font-weight:900; letter-spacing:2px; }
+.flux-howto-heading h2 { margin:0 0 9px; font-size:clamp(25px,3.5vw,36px); letter-spacing:-.8px; color:#fff; }
+.flux-howto-heading p { margin:0; color:#b9acc7; font-size:14px; line-height:1.75; }
+.flux-howto-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.flux-howto-card { position:relative; min-width:0; padding:22px 20px; border:1px solid rgba(196,163,255,.13); border-radius:18px; background:rgba(255,255,255,.025); }
+.flux-step { position:absolute; right:16px; top:14px; color:rgba(196,163,255,.45); font-size:11px; font-weight:900; letter-spacing:1px; }
+.flux-step-icon { display:grid; place-items:center; width:38px; height:38px; margin-bottom:15px; border:1px solid rgba(196,163,255,.2); border-radius:12px; background:rgba(124,58,237,.12); color:#dfceff; font-size:22px; }
+.flux-howto-card h3 { margin:0 0 8px; color:#fff; font-size:16px; }
+.flux-howto-card p { margin:0; color:#a99db7; font-size:12.5px; line-height:1.7; }
+.flux-howto-foot { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-top:18px; padding-top:18px; border-top:1px solid rgba(196,163,255,.12); }
+.flux-howto-foot p { margin:0; max-width:760px; color:#a99db7; font-size:12px; line-height:1.7; }
+.flux-howto-foot p strong { color:#e6d9ff; }
+.flux-howto-foot .btn { flex-shrink:0; }
+#compra-extra-fields { margin:0 0 16px; text-align:left; }
+.compra-form { padding:16px; margin-bottom:14px; border:1px solid rgba(196,163,255,.16); border-radius:16px; background:rgba(124,58,237,.055); }
+.compra-form h3 { margin:0 0 12px; color:#e6d9ff; font-size:14px; }
+.compra-form .campo { margin-bottom:12px; }
+.compra-form .campo:last-child { margin-bottom:0; }
+.compra-form label { color:#ddd0ed; }
+.compra-form input { width:100%; }
+.compra-form .compra-ayuda { margin:10px 0 0; color:#a99db7; font-size:11.5px; line-height:1.65; }
+@media(max-width:760px) {
+ .flux-howto-grid { grid-template-columns:1fr; }
+ .flux-howto-card { padding:18px; }
+ .flux-howto-foot { align-items:stretch; flex-direction:column; }
+ .flux-howto-foot .btn { width:100%; justify-content:center; }
+}
+
 </style>
 <link rel="icon" href="assets/flux-store.svg" type="image/svg+xml"><meta name="theme-color" content="#10091a"></head>
 <body>
@@ -1197,6 +1229,37 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
         <p>Información y asistencia en español, de principio a fin.</p>
       </div>
     </div>
+    <section class="flux-howto" aria-label="Cómo comprar en FLUX STORE">
+      <div class="flux-howto-heading">
+        <span class="flux-kicker">COMPRA INFORMADA</span>
+        <h2>De la tienda a tu pedido</h2>
+        <p>Un proceso sencillo y claro: revisa las opciones y confirma todo con el equipo antes de pagar.</p>
+      </div>
+      <div class="flux-howto-grid">
+        <article class="flux-howto-card">
+          <span class="flux-step">01</span>
+          <div class="flux-step-icon" aria-hidden="true">⌕</div>
+          <h3>Explora el catálogo</h3>
+          <p>Revisa la ficha, la disponibilidad, el selector de cantidad y el precio configurado.</p>
+        </article>
+        <article class="flux-howto-card">
+          <span class="flux-step">02</span>
+          <div class="flux-step-icon" aria-hidden="true">↗</div>
+          <h3>Prepara tu pedido</h3>
+          <p>Completa solo los datos necesarios para el producto. La web prepara un mensaje para Discord.</p>
+        </article>
+        <article class="flux-howto-card">
+          <span class="flux-step">03</span>
+          <div class="flux-step-icon" aria-hidden="true">✓</div>
+          <h3>Confirma antes de pagar</h3>
+          <p>Pregunta por disponibilidad, entrega y métodos de pago válidos en tu país antes de enviar dinero.</p>
+        </article>
+      </div>
+      <div class="flux-howto-foot">
+        <p><strong>Tu seguridad primero.</strong> No compartas contraseñas, códigos de verificación ni datos de acceso. FLUX STORE no procesa pagos desde esta página.</p>
+        <button class="btn btn-rosa" type="button" onclick="irA('soporte')">Consultar por Discord</button>
+      </div>
+    </section>
   </section>
 
   <!-- ===== PRODUCTOS ===== -->
@@ -1403,6 +1466,7 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
       <div style="font-size:13px; color:var(--texto-tenue); font-weight:600; text-transform:uppercase; letter-spacing:.6px;">Precio</div>
       <div style="font-size:32px; font-weight:900; margin-top:4px; color:var(--rosa-suave);" id="compra-precio"></div>
     </div>
+    <div id="compra-extra-fields"></div>
     <div id="compra-botones"></div>
     <div id="compra-sincontacto" class="oculto" style="color:var(--texto-tenue); font-size:14px; margin-top:10px;">
       Configura el enlace de Discord en el panel de administración para recibir pedidos.
@@ -1469,7 +1533,7 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
   const LK_FAQS      = "fluxStoreFaqs";
   const CONFIG_DEF = { password: "", adminEmail: "", adminPassword: "", whatsapp: "", telegram: "", discord: "https://discord.gg/fluxstore" };
 
-  const DATOS_SEMILLA = {"config":{"whatsapp":"","telegram":"","discord":"https://discord.gg/fluxstore"},"productos":[{"id":"flux-youtube","nombre":"YouTube Premium","descripcion":"Consulta planes, duración y disponibilidad antes de realizar el pedido.","imagen":"https://cdn.simpleicons.org/youtube/FF0033","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## YouTube Premium\n- Consulta la duración disponible.\n- Confirma compatibilidad y condiciones.\n- Solo se atienden opciones y códigos autorizados.","tipos":[]},{"id":"flux-netflix","nombre":"Netflix Premium","descripcion":"Películas y series. Consulta disponibilidad, duración y condiciones.","imagen":"https://cdn.simpleicons.org/netflix/E50914","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Netflix Premium\n- Consulta el plan y la duración disponibles.\n- Confirma compatibilidad y condiciones antes de pedir.\n- Se priorizan suscripciones y códigos autorizados.","tipos":[]},{"id":"flux-spotify","nombre":"Spotify Premium","descripcion":"Música y podcasts con las funciones del plan Premium disponible.","imagen":"https://cdn.simpleicons.org/spotify/1DB954","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Spotify Premium\n- Consulta la duración y modalidad disponible.\n- Confirma compatibilidad y las condiciones del plan.\n- No compartas contraseñas por el chat.","tipos":[]},{"id":"flux-hbomax","nombre":"HBO Max","descripcion":"Catálogo de películas y series. Consulta la opción disponible.","imagen":"https://cdn.simpleicons.org/max/7C3AED","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## HBO Max\n- Consulta duración y disponibilidad.\n- Confirma las condiciones antes de comprar.","tipos":[]},{"id":"flux-disney","nombre":"Disney+","descripcion":"Entretenimiento y series. Consulta duración y disponibilidad.","imagen":"https://cdn.simpleicons.org/disneyplus/113CCF","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Disney+\n- Consulta duración y disponibilidad.\n- Confirma el plan y las condiciones de uso.","tipos":[]},{"id":"flux-minecraft","nombre":"Minecraft Premium Java & Bedrock","descripcion":"Consulta edición, licencia, región y disponibilidad antes de pedir.","imagen":"https://cdn.simpleicons.org/minecraft/62B47A","categoria":"minecraft","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Minecraft Premium\n- Confirma las ediciones incluidas.\n- Verifica compatibilidad regional y requisitos.\n- Adquiere licencias o códigos autorizados.","tipos":[]},{"id":"flux-nitro-basic","nombre":"Discord Nitro Basic","descripcion":"Consulta disponibilidad y elegibilidad antes de canjear.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Basic\n- Consulta duración y método de canje.\n- Confirma elegibilidad y condiciones antes de pedir.","tipos":[]},{"id":"flux-nitro-procode","nombre":"Discord Nitro Procode","descripcion":"Consulta el tipo de código, duración y condiciones de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Procode\n- Confirma duración y restricciones del código.\n- Los códigos deben proceder de una fuente autorizada.","tipos":[]},{"id":"flux-nitro-3m","nombre":"Discord Nitro · 3 meses","descripcion":"Consulta disponibilidad, elegibilidad y método de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro · 3 meses\n- Confirma la duración y elegibilidad.\n- Consulta las condiciones de canje.","tipos":[]},{"id":"flux-booster","nombre":"Discord Server Boost","descripcion":"Elige de 2 a 24 boosters. El total se calcula según el precio configurado por booster.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Server Boost\nElige la cantidad en el selector. El precio se configura como importe por booster; el total se calcula automáticamente.\n\nConfirma disponibilidad y condiciones antes de pagar.","tipos":[],"selector":{"kind":"boosters","min":2,"max":24,"step":1}},{"id":"flux-robux","nombre":"Robux","descripcion":"Elige de 100 a 10.000 Robux. Configura el precio por cada 100 Robux.","imagen":"https://cdn.simpleicons.org/roblox/FFFFFF","categoria":"gaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Robux\nSelecciona la cantidad para ver el total estimado. El precio del panel equivale a cada bloque de 100 Robux.\n\nVerifica las reglas oficiales de Roblox y utiliza métodos de compra permitidos.","tipos":[],"selector":{"kind":"robux","min":100,"max":10000,"step":100}},{"id":"flux-promo","nombre":"Promoción de servidor","descripcion":"Consulta campañas legítimas para dar a conocer tu comunidad.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"servicios","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Promoción de servidor\n- Publicaciones y anuncios de tu comunidad.\n- Promoción legítima de eventos y contenido.\n- No incluye bots ni miembros falsos.","tipos":[]},{"id":"flux-old-nitro-accounts","nombre":"Cuentas con Nitro antiguas","descripcion":"No disponible. Consulta alternativas autorizadas de suscripción o códigos.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":false,"conTipos":false,"precio":null,"stock":false,"caracteristicas":"## No disponible\nNo se publican cuentas de terceros. Consulta opciones de suscripción o códigos autorizados.","tipos":[]}],"faqs":[{"id":"flux-faq-buy","pregunta":"¿Cómo realizo una compra?","respuesta":"Abre un producto, revisa sus detalles y pulsa Comprar. Se abrirá nuestro Discord para consultar el pedido por ticket."},{"id":"flux-faq-price","pregunta":"¿Cómo se calcula el precio de boosters y Robux?","respuesta":"En boosters se multiplica la cantidad por el precio de un booster; en Robux se calcula el precio proporcional por cada 100 Robux."},{"id":"flux-faq-delivery","pregunta":"¿Cuándo recibo mi pedido?","respuesta":"La disponibilidad y los tiempos dependen del producto. Confirma los detalles por Discord antes de pagar."},{"id":"flux-faq-security","pregunta":"¿Debo compartir mi contraseña?","respuesta":"No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."}]};
+  const DATOS_SEMILLA = {"config":{"whatsapp":"","telegram":"","discord":"https://discord.gg/fluxstore"},"productos":[{"id":"flux-youtube","nombre":"YouTube Premium","descripcion":"Consulta planes, duración y disponibilidad antes de realizar el pedido.","imagen":"https://cdn.simpleicons.org/youtube/FF0033","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## YouTube Premium\n- Consulta la duración disponible.\n- Confirma compatibilidad y condiciones.\n- Solo se atienden opciones y códigos autorizados.","tipos":[]},{"id":"flux-netflix","nombre":"Netflix Premium","descripcion":"Películas y series. Consulta disponibilidad, duración y condiciones.","imagen":"https://cdn.simpleicons.org/netflix/E50914","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Netflix Premium\n- Consulta el plan y la duración disponibles.\n- Confirma compatibilidad y condiciones antes de pedir.\n- Se priorizan suscripciones y códigos autorizados.","tipos":[]},{"id":"flux-spotify","nombre":"Spotify Premium","descripcion":"Música y podcasts con las funciones del plan Premium disponible.","imagen":"https://cdn.simpleicons.org/spotify/1DB954","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Spotify Premium\n- Consulta la duración y modalidad disponible.\n- Confirma compatibilidad y las condiciones del plan.\n- No compartas contraseñas por el chat.","tipos":[]},{"id":"flux-hbomax","nombre":"HBO Max","descripcion":"Catálogo de películas y series. Consulta la opción disponible.","imagen":"https://cdn.simpleicons.org/max/7C3AED","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## HBO Max\n- Consulta duración y disponibilidad.\n- Confirma las condiciones antes de comprar.","tipos":[]},{"id":"flux-disney","nombre":"Disney+","descripcion":"Entretenimiento y series. Consulta duración y disponibilidad.","imagen":"https://cdn.simpleicons.org/disneyplus/113CCF","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Disney+\n- Consulta duración y disponibilidad.\n- Confirma el plan y las condiciones de uso.","tipos":[]},{"id":"flux-minecraft","nombre":"Minecraft Premium Java & Bedrock","descripcion":"Consulta edición, licencia, región y disponibilidad antes de pedir.","imagen":"https://cdn.simpleicons.org/minecraft/62B47A","categoria":"minecraft","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Minecraft Premium\n- Confirma las ediciones incluidas.\n- Verifica compatibilidad regional y requisitos.\n- Adquiere licencias o códigos autorizados.","tipos":[]},{"id":"flux-nitro-basic","nombre":"Discord Nitro Basic","descripcion":"Consulta disponibilidad y elegibilidad antes de canjear.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Basic\n- Consulta duración y método de canje.\n- Confirma elegibilidad y condiciones antes de pedir.","tipos":[]},{"id":"flux-nitro-procode","nombre":"Discord Nitro Procode","descripcion":"Consulta el tipo de código, duración y condiciones de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Procode\n- Confirma duración y restricciones del código.\n- Los códigos deben proceder de una fuente autorizada.","tipos":[]},{"id":"flux-nitro-3m","nombre":"Discord Nitro · 3 meses","descripcion":"Consulta disponibilidad, elegibilidad y método de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro · 3 meses\n- Confirma la duración y elegibilidad.\n- Consulta las condiciones de canje.","tipos":[]},{"id":"flux-booster","nombre":"Discord Server Boost","descripcion":"Elige de 2 a 24 boosters. El total se calcula según el precio configurado por booster.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Server Boost\nElige la cantidad en el selector. El precio se configura como importe por booster; el total se calcula automáticamente.\n\nConfirma disponibilidad y condiciones antes de pagar.","tipos":[],"selector":{"kind":"boosters","min":2,"max":24,"step":1}},{"id":"flux-robux","nombre":"Robux","descripcion":"Elige de 100 a 10.000 Robux y prepara el pedido con tu usuario público y el enlace del Game Pass.","imagen":"https://cdn.simpleicons.org/roblox/FFFFFF","categoria":"gaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Robux\\n- Elige la cantidad para consultar el total según el precio configurado.\\n- Ten listo tu usuario público de Roblox y el enlace del Game Pass.\\n- No compartas tu contraseña ni códigos de acceso.\\n- Confirma disponibilidad, condiciones y entrega por Discord.","tipos":[],"selector":{"kind":"robux","min":100,"max":10000,"step":100}},{"id":"flux-promo","nombre":"Promoción de servidor","descripcion":"Consulta campañas legítimas para dar a conocer tu comunidad.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"servicios","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Promoción de servidor\n- Publicaciones y anuncios de tu comunidad.\n- Promoción legítima de eventos y contenido.\n- No incluye bots ni miembros falsos.","tipos":[]},{"id":"flux-old-nitro-accounts","nombre":"Cuentas con Nitro antiguas","descripcion":"No disponible. Consulta alternativas autorizadas de suscripción o códigos.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":false,"conTipos":false,"precio":null,"stock":false,"caracteristicas":"## No disponible\nNo se publican cuentas de terceros. Consulta opciones de suscripción o códigos autorizados.","tipos":[]}],"faqs":[{"id":"flux-faq-buy","pregunta":"¿Cómo realizo una compra?","respuesta":"Abre un producto, revisa sus detalles y pulsa Comprar. Se abrirá nuestro Discord para consultar el pedido por ticket."},{"id":"flux-faq-price","pregunta":"¿Cómo se calcula el precio de boosters y Robux?","respuesta":"En boosters se multiplica la cantidad por el precio de un booster; en Robux se calcula el precio proporcional por cada 100 Robux."},{"id":"flux-faq-delivery","pregunta":"¿Cuándo recibo mi pedido?","respuesta":"La disponibilidad y los tiempos dependen del producto. Confirma los detalles por Discord antes de pagar."},{"id":"flux-faq-security","pregunta":"¿Debo compartir mi contraseña?","respuesta":"No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."},{"id":"flux-faq-payment","pregunta":"¿Qué métodos de pago aceptan?","respuesta":"La disponibilidad depende del país y del producto. Consulta por Discord y espera la confirmación del equipo antes de pagar. Esta web no procesa pagos directamente."}]};
 
   let productos = cargar(LK_PRODUCTOS, JSON.parse(JSON.stringify(DATOS_SEMILLA.productos)));
   let config    = Object.assign({}, CONFIG_DEF, DATOS_SEMILLA.config, cargar(LK_CONFIG, {}));
@@ -1933,32 +1997,56 @@ function precioMinimo(producto) {
   }
 
   /* ============ Compra ============ */
+  /* ============ Compra ============ */
+  let pedidoProductoActual = null;
+
   function abrirCompra(pid, tid) {
     const p = productos.find(x => x.id === pid);
     if (!p) return;
     const t = detalleUnidad(p, tid);
     if (!t) return;
-    const sinTipos = p.conTipos === false; const sliderCompra = document.getElementById("selector-rango"); const cantidadSelector = p.selector ? Number(sliderCompra ? sliderCompra.value : p.selector.min) : null; const precioPedido = p.selector ? precioSelector(p, cantidadSelector) : t.precio; const nombrePedido = p.selector ? p.nombre + " (" + etiquetaSelector(p, cantidadSelector) + ")" : (sinTipos ? p.nombre : t.nombre + " · " + p.nombre);
-    document.getElementById("compra-titulo").textContent = "¡Vamos a por ello!";
+
+    const sinTipos = p.conTipos === false;
+    const sliderCompra = document.getElementById("selector-rango");
+    const cantidadSelector = p.selector ? Number(sliderCompra ? sliderCompra.value : p.selector.min) : null;
+    const precioPedido = p.selector ? precioSelector(p, cantidadSelector) : t.precio;
+    const nombrePedido = p.selector
+      ? p.nombre + " (" + etiquetaSelector(p, cantidadSelector) + ")"
+      : (sinTipos ? p.nombre : t.nombre + " · " + p.nombre);
+
+    pedidoProductoActual = p;
+    document.getElementById("compra-titulo").textContent = "Prepara tu pedido";
     document.getElementById("compra-nombre").textContent = nombrePedido;
     document.getElementById("compra-precio").textContent = euros(precioPedido);
-
     pedidoTexto = "Hola! Me interesa este producto de FLUX STORE:\n📦 " + nombrePedido + "\n💰 " + euros(precioPedido);
+
+    const extras = document.getElementById("compra-extra-fields");
+    if (extras) {
+      const regionField = '<div class="campo"><label for="compra-region">País o región (opcional)</label><input id="compra-region" type="text" maxlength="60" placeholder="Ej. Venezuela, España, México"></div>';
+      if (p.selector && p.selector.kind === "robux") {
+        extras.innerHTML = '<div class="compra-form"><h3>Datos para preparar tu pedido de Robux</h3>' +
+          '<div class="campo"><label for="compra-roblox-usuario">Usuario público de Roblox *</label><input id="compra-roblox-usuario" type="text" maxlength="32" autocomplete="off" placeholder="Tu nombre de usuario"></div>' +
+          '<div class="campo"><label for="compra-roblox-gamepass">Enlace de tu Game Pass *</label><input id="compra-roblox-gamepass" type="url" inputmode="url" autocomplete="url" placeholder="https://www.roblox.com/game-pass/..."></div>' +
+          regionField +
+          '<p class="compra-ayuda">Solo necesitas tu usuario público y el enlace del pase. Nunca escribas tu contraseña ni códigos de acceso aquí.</p></div>';
+      } else {
+        extras.innerHTML = '<div class="compra-form">' + regionField +
+          '<p class="compra-ayuda">Los métodos de pago y la disponibilidad se confirman por Discord según tu país y el producto. Espera la confirmación del equipo antes de pagar.</p></div>';
+      }
+    }
+
     const url = enlaceDiscord();
     let btns = "";
     if (url) {
-      btns = `<a class="boton-contacto discord" style="width:100%; justify-content:center; margin-top:0;"
-        href="${esc(url)}" target="_blank" rel="noopener" onclick="pedirPorDiscord()">Pedir por Discord</a>
-        <div style="font-size:12.5px; color:var(--texto-tenue); margin-top:10px; line-height:1.5;">
-          Tu pedido se copia automáticamente; pégalo en el canal de compras del Discord.
-        </div>`;
+      btns = '<a class="boton-contacto discord" style="width:100%;justify-content:center;margin-top:0;" href="' +
+        esc(url) + '" target="_blank" rel="noopener" onclick="return pedirPorDiscord()">Pedir por Discord</a>' +
+        '<div style="font-size:12.5px;color:var(--texto-tenue);margin-top:10px;line-height:1.5;">Se copiará un resumen de tu pedido para que puedas pegarlo en Discord.</div>';
     }
     document.getElementById("compra-botones").innerHTML =
-      `<div style="display:flex; flex-direction:column;">${btns}</div>`;
+      '<div style="display:flex;flex-direction:column;">' + btns + '</div>';
     document.getElementById("compra-sincontacto").classList.toggle("oculto", !!url);
     document.getElementById("overlay-compra").classList.add("abierto");
   }
-
   /* ============ Acceso administrador ============ */
   const LK_ADMIN = "fluxStoreAdmin"; const LK_ADMIN_PASSWORD = "fluxStoreAdminPassword";
   let adminActivo = false;
@@ -2008,12 +2096,45 @@ function precioMinimo(producto) {
   function pedirPorDiscord(texto) {
     const url = enlaceDiscord();
     if (!url) {
-      alert("El enlace de Discord no está configurado todavía.\n\nPídele al administrador que lo ponga en el panel.");
-      return;
+      alert("El enlace de Discord no está configurado todavía. Pídele al administrador que lo configure.");
+      return false;
     }
-    const t = texto || pedidoTexto || "";
+
+    let t = texto || pedidoTexto || "";
+    const regionInput = document.getElementById("compra-region");
+    const region = regionInput ? regionInput.value.trim() : "";
+    if (region) t += "\n🌎 País o región: " + region;
+
+    if (!texto && pedidoProductoActual && pedidoProductoActual.selector && pedidoProductoActual.selector.kind === "robux") {
+      const usuarioInput = document.getElementById("compra-roblox-usuario");
+      const enlaceInput = document.getElementById("compra-roblox-gamepass");
+      const usuario = usuarioInput ? usuarioInput.value.trim() : "";
+      const enlace = enlaceInput ? enlaceInput.value.trim() : "";
+      if (!usuario) {
+        alert("Escribe tu usuario público de Roblox para preparar el pedido.");
+        if (usuarioInput) usuarioInput.focus();
+        return false;
+      }
+      if (!enlace) {
+        alert("Añade el enlace público de tu Game Pass.");
+        if (enlaceInput) enlaceInput.focus();
+        return false;
+      }
+      let parsed;
+      try { parsed = new URL(enlace); } catch (e) { parsed = null; }
+      if (!parsed || (parsed.protocol !== "https:" && parsed.protocol !== "http:") ||
+          !/^(www\.)?roblox\.com$/i.test(parsed.hostname) ||
+          !/^\/game-pass\/\d+/i.test(parsed.pathname)) {
+        alert("El enlace debe ser un Game Pass de Roblox, por ejemplo: https://www.roblox.com/game-pass/123456789");
+        if (enlaceInput) enlaceInput.focus();
+        return false;
+      }
+      t += "\n🎮 Usuario de Roblox: " + usuario + "\n🔗 Game Pass: " + parsed.href;
+    }
+
     if (t) copiarTexto(t);
     window.open(url, "_blank", "noopener");
+    return false;
   }
   function actualizarSoporte() {
     const btn = document.getElementById("btn-discord-soporte");
