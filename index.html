@@ -1059,6 +1059,21 @@
 @media(max-width:520px){.selector-box{padding:14px}.selector-head{align-items:flex-start;flex-direction:column}.selector-head strong{align-self:flex-start}}
 
 
+.hero { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto auto auto; }
+.hero-orbita,.hero-sticker { display:none !important; }
+.flux-secret-zone { position:relative; isolation:isolate; overflow:hidden; display:flex; flex-direction:column; align-items:center; gap:10px; margin:0; padding:42px 18px 36px; border-top:1px solid rgba(196,163,255,.13); background:radial-gradient(ellipse at 50% 0,rgba(124,58,237,.14),transparent 65%),linear-gradient(180deg,#0a0611,#07050b); text-align:center; }
+.flux-secret-zone::before { content:""; position:absolute; z-index:-1; width:260px; aspect-ratio:1; top:50%; left:50%; transform:translate(-50%,-50%); border:1px dashed rgba(196,163,255,.12); border-radius:50%; box-shadow:0 0 0 24px rgba(196,163,255,.018),0 0 60px rgba(124,58,237,.1); pointer-events:none; }
+.flux-secret-kicker { margin:0; font-size:10px; font-weight:800; letter-spacing:3px; color:#bfa4eb; }
+.flux-secret-kicker span { color:#fff; padding:0 5px; }
+.flux-secret-copy { margin:0; color:#9c90aa; font-size:12px; line-height:1.5; }
+.flux-secret-logo { position:relative; z-index:1; display:block; width:76px; height:76px; object-fit:cover; padding:5px; margin:8px 0 0; border-radius:23px; border:1px solid rgba(196,163,255,.35); background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(124,58,237,.1)); box-shadow:0 14px 36px rgba(124,58,237,.17),0 0 0 8px rgba(196,163,255,.025); cursor:pointer; user-select:none; -webkit-user-drag:none; animation:fluxLogoFloat 5s ease-in-out infinite; transition:filter .2s ease,border-color .2s ease,transform .2s ease; }
+.flux-secret-logo:hover { filter:brightness(1.16); border-color:#e8d9ff; transform:scale(1.04); }
+.flux-secret-logo:focus-visible { outline:3px solid #c4a3ff; outline-offset:5px; }
+.flux-secret-hint { margin:0; font-size:10px; font-weight:700; letter-spacing:.8px; color:#a99aba; }
+.flux-secret-hint span { padding:0 5px; color:#c4a3ff; }
+.flux-secret-logo.logo-tap { animation:fluxLogoTap .24s ease; }
+.flux-secret-logo.logo-boost { animation:fluxLogoBoost .75s ease-in-out 3; }
+
 /* ===== Identidad visual propia de FLUX STORE ===== */
 :root { --fuente-flux: 'Manrope', sans-serif; }
 body { font-family: var(--fuente-flux); background: radial-gradient(ellipse at 50% -12%, rgba(124,58,237,.16), transparent 46%), var(--fondo-1); }
@@ -1092,8 +1107,6 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
 @keyframes fluxOrbita { from{transform:translateY(-50%) rotate(0)} to{transform:translateY(-50%) rotate(360deg)} }
 @keyframes fluxLogoTap { 0%{transform:scale(1) rotate(2deg)} 40%{transform:scale(.92) rotate(-5deg)} 100%{transform:scale(1) rotate(2deg)} }
 @keyframes fluxLogoBoost { 0%,100%{filter:brightness(1);box-shadow:0 24px 70px rgba(124,58,237,.3),0 0 0 12px rgba(196,163,255,.04)} 50%{filter:brightness(1.45);box-shadow:0 0 65px rgba(196,163,255,.8),0 0 0 22px rgba(124,58,237,.16)} }
-.hero .logo-gigante.logo-tap { animation:fluxLogoTap .24s ease; }
-.hero .logo-gigante.logo-boost { animation:fluxLogoBoost .75s ease-in-out 3; }
 .flux-secret-toast { position:fixed; left:50%; bottom:24px; z-index:99999; max-width:calc(100vw - 28px); padding:12px 18px; border:1px solid rgba(214,191,255,.35); border-radius:14px; background:rgba(17,9,29,.96); color:#f5edff; box-shadow:0 16px 55px rgba(0,0,0,.4),0 0 32px rgba(124,58,237,.25); font-size:13px; font-weight:800; text-align:center; opacity:0; transform:translate(-50%,16px); pointer-events:none; transition:opacity .2s ease,transform .2s ease; }
 .flux-secret-toast.visible { opacity:1; transform:translate(-50%,0); }
 .sellos { max-width:1220px; margin:26px auto 0; gap:16px; }
@@ -1166,11 +1179,7 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
       <button class="cta" onclick="irA('productos')">Explorar catálogo
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <img id="flux-logo-principal" class="logo-gigante" src="assets/flux-store.svg" alt="Logo principal de FLUX STORE" title="Haz clic 10 veces para desbloquear una sorpresa" role="button" tabindex="0" aria-label="Logo de FLUX STORE. Haz clic diez veces para activar una sorpresa." onclick="clicLogoPrincipal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();clicLogoPrincipal()}">
-      <div class="hero-orbita" aria-hidden="true"></div>
-      <div class="hero-sticker" aria-hidden="true"><span>FLUX</span><strong>SELECT</strong><small>EDICIÓN DIGITAL</small></div>
     </div>
-    <div id="flux-secret-toast" class="flux-secret-toast" role="status" aria-live="polite"></div>
     <div class="sellos">
       <div class="sello">
         <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
@@ -1245,6 +1254,15 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
   </div>
   <p>© <span id="anio"></span> FLUX STORE · Streaming, gaming y productos digitales · Todos los derechos reservados</p>
 </footer>
+
+<!-- Secreto de FLUX STORE al final de la página -->
+<section class="flux-secret-zone" aria-label="Secreto de FLUX STORE">
+  <p class="flux-secret-kicker">FIN DEL RECORRIDO <span>✦</span></p>
+  <p class="flux-secret-copy">¿Llegaste hasta abajo? Aquí queda un pequeño secreto.</p>
+  <img id="flux-logo-principal" class="flux-secret-logo" src="assets/flux-store.svg" alt="Logo secreto de FLUX STORE" title="Haz clic 10 veces para desbloquear FLUX BOOST" role="button" tabindex="0" aria-label="Logo secreto de FLUX STORE. Haz clic diez veces para activar FLUX BOOST." onclick="clicLogoPrincipal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();clicLogoPrincipal()}">
+  <p class="flux-secret-hint">10 clics en el logo <span>·</span> FLUX BOOST</p>
+  <div id="flux-secret-toast" class="flux-secret-toast" role="status" aria-live="polite"></div>
+</section>
 
 <!-- ===== Modal acceso administrador ===== -->
 <div id="overlay-clave" class="overlay">
