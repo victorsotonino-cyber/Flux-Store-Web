@@ -1134,7 +1134,7 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
  .hero .hero-eyebrow span { display:none; }
 }
 @media (prefers-reduced-motion:reduce) {
- .hero-orbita,.hero .logo-gigante { animation:none!important; }
+ .hero-orbita,.hero .logo-gigante,.flux-secret-logo { animation:none!important; }
  .hero,.sello,.hero .cta { transition:none!important; }
 }
 
@@ -1197,7 +1197,6 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
         <p>Información y asistencia en español, de principio a fin.</p>
       </div>
     </div>
-    <button class="admin-oculto" title="Administración" onclick="pedirClave()">⚙</button>
   </section>
 
   <!-- ===== PRODUCTOS ===== -->
@@ -1435,16 +1434,20 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
     const toast = document.getElementById("flux-secret-toast");
     if (!logo || !toast) return;
     fluxLogoClickCount += 1;
+    const desbloqueado = fluxLogoClickCount >= 10;
     logo.classList.remove("logo-tap");
     void logo.offsetWidth;
     logo.classList.add("logo-tap");
-    toast.textContent = fluxLogoClickCount < 10
-      ? "FLUX BOOST · " + fluxLogoClickCount + "/10 clics"
-      : "✦ ¡FLUX BOOST DESBLOQUEADO! ✦";
+    toast.textContent = desbloqueado
+      ? "✦ ACCESO AL PANEL DE ADMINISTRADOR ✦"
+      : "ACCESO ADMIN · " + fluxLogoClickCount + "/10 clics";
     toast.classList.add("visible");
     if (fluxToastTimer) clearTimeout(fluxToastTimer);
-    fluxToastTimer = setTimeout(() => toast.classList.remove("visible"), fluxLogoClickCount === 10 ? 2400 : 850);
-    if (fluxLogoClickCount >= 10) {
+    fluxToastTimer = setTimeout(() => {
+      toast.classList.remove("visible");
+      if (desbloqueado) pedirClave();
+    }, desbloqueado ? 650 : 850);
+    if (desbloqueado) {
       fluxLogoClickCount = 0;
       logo.classList.remove("logo-boost");
       void logo.offsetWidth;
