@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-25T23:52:50.314315+00:00",
+  "fecha": "2026-10-26T00:35:00.000Z",
   "config": {
     "whatsapp": "",
     "telegram": "",
@@ -145,14 +145,14 @@
     {
       "id": "flux-robux",
       "nombre": "Robux",
-      "descripcion": "Elige de 100 a 10.000 Robux. Configura el precio por cada 100 Robux.",
+      "descripcion": "Elige de 100 a 10.000 Robux y prepara el pedido con tu usuario público y el enlace del Game Pass.",
       "imagen": "https://cdn.simpleicons.org/roblox/FFFFFF",
       "categoria": "gaming",
       "visible": true,
       "conTipos": false,
       "precio": null,
       "stock": true,
-      "caracteristicas": "## Robux\nSelecciona la cantidad para ver el total estimado. El precio del panel equivale a cada bloque de 100 Robux.\n\nVerifica las reglas oficiales de Roblox y utiliza métodos de compra permitidos.",
+      "caracteristicas": "## Robux\\n- Elige la cantidad para consultar el total según el precio configurado.\\n- Ten listo tu usuario público de Roblox y el enlace del Game Pass.\\n- No compartas tu contraseña ni códigos de acceso.\\n- Confirma disponibilidad, condiciones y entrega por Discord.",
       "tipos": [],
       "selector": {
         "kind": "robux",
@@ -208,6 +208,11 @@
       "id": "flux-faq-security",
       "pregunta": "¿Debo compartir mi contraseña?",
       "respuesta": "No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."
+    },
+    {
+      "id": "flux-faq-payment",
+      "pregunta": "¿Qué métodos de pago aceptan?",
+      "respuesta": "La disponibilidad depende del país y del producto. Consulta por Discord y espera la confirmación del equipo antes de pagar. Esta web no procesa pagos directamente."
     }
   ]
 }
