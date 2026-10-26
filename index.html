@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLUX STORE · Streaming, gaming y productos digitales</title>
+<title>FLUX STORE — Tu mundo digital, a tu manera</title>
+<meta name="description" content="Descubre streaming, gaming y productos digitales en FLUX STORE. Consulta disponibilidad y recibe atención en español por Discord.">
+<meta property="og:title" content="FLUX STORE — Tu mundo digital, a tu manera">
+<meta property="og:description" content="Streaming, gaming y productos digitales con atención directa.">
+<meta property="og:type" content="website">
 <link rel="icon" href="assets/flux-store.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
   --rosa:#9b6bff; --rosa-neon:#c4a3ff; --rosa-suave:#dfceff; --rosa-pastel:#f1e8ff;
@@ -27,7 +31,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: "Outfit", "Segoe UI", Arial, sans-serif;
+    font-family: "Manrope", "Segoe UI", Arial, sans-serif;
     background: var(--azul-profundo);
     color: var(--texto);
     min-height: 100vh;
@@ -211,7 +215,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 8px 30px rgba(0,255,136,.35));
+    filter: drop-shadow(0 8px 30px rgba(168,85,247,.35));
   }
   .hero .sub {
     margin-top: 18px;
@@ -238,7 +242,7 @@
     box-shadow: var(--glow-rosa);
     transition: transform .15s ease, box-shadow .2s ease;
   }
-  .hero .cta:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 40px rgba(0,255,136,.7); }
+  .hero .cta:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 40px rgba(168,85,247,.7); }
 
   /* ===== Sellos de confianza ===== */
   .sellos {
@@ -411,7 +415,7 @@
     text-transform: uppercase;
     padding: 5px 12px;
     border-radius: 999px;
-    background: rgba(0,255,136,.12);
+    background: rgba(168,85,247,.12);
     border: 1px solid var(--borde-rosa);
     color: var(--rosa-neon);
   }
@@ -492,7 +496,7 @@
   .btn-comprar:hover {
     transform: translateY(-2px) scale(1.02);
     filter: brightness(1.1);
-    box-shadow: 0 0 34px rgba(0,255,136,.75);
+    box-shadow: 0 0 34px rgba(168,85,247,.75);
   }
   .btn-comprar:hover svg { transform: translateX(3px); }
   .btn-comprar:active { transform: scale(.97); }
@@ -702,7 +706,7 @@
     outline: none;
     transition: border-color .2s ease;
   }
-  .campo input:focus, .campo textarea:focus { border-color: var(--borde-rosa); box-shadow: 0 0 0 3px rgba(0,255,136,.15); }
+  .campo input:focus, .campo textarea:focus { border-color: var(--borde-rosa); box-shadow: 0 0 0 3px rgba(168,85,247,.15); }
   .campo select {
     width: 100%;
     padding: 11px 14px;
@@ -716,7 +720,7 @@
     cursor: pointer;
     transition: border-color .2s ease;
   }
-  .campo select:focus { border-color: var(--borde-rosa); box-shadow: 0 0 0 3px rgba(0,255,136,.15); }
+  .campo select:focus { border-color: var(--borde-rosa); box-shadow: 0 0 0 3px rgba(168,85,247,.15); }
   .campo select option { background: #050505; color: #fff; }
   .campo textarea { resize: vertical; min-height: 70px; }
   .campo textarea.tipo-caract {
@@ -918,7 +922,7 @@
     height: 7px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--rosa), var(--violeta-glow));
-    box-shadow: 0 0 8px rgba(0,255,136,.6);
+    box-shadow: 0 0 8px rgba(168,85,247,.6);
   }
   .ver-caract {
     display: block;
@@ -1054,6 +1058,73 @@
 .admin-item .acc .mini-btn:hover,.mini-btn.verde:hover{border-color:var(--borde-rosa);color:var(--rosa-neon)}
 @media(max-width:520px){.selector-box{padding:14px}.selector-head{align-items:flex-start;flex-direction:column}.selector-head strong{align-self:flex-start}}
 
+
+/* ===== Identidad visual propia de FLUX STORE ===== */
+:root { --fuente-flux: 'Manrope', sans-serif; }
+body { font-family: var(--fuente-flux); background: radial-gradient(ellipse at 50% -12%, rgba(124,58,237,.16), transparent 46%), var(--fondo-1); }
+header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255,.14); backdrop-filter: blur(18px); }
+.nav { max-width: 1280px; padding-top: 16px; padding-bottom: 16px; }
+.marca img { border-radius: 14px; transform: rotate(-4deg); transition: transform .25s ease, box-shadow .25s ease; }
+.marca:hover img { transform: rotate(0deg) scale(1.04); }
+.marca .nombre small { letter-spacing: 1.8px; }
+.enlaces { background: rgba(24,14,39,.72); border-color: rgba(196,163,255,.14); }
+.enlaces button.activo { background: linear-gradient(130deg,#6735b5,#9b6bff); color: #fff; box-shadow: 0 6px 22px rgba(124,58,237,.28); }
+.hero { position:relative; max-width:1220px; margin:24px auto 0; padding:clamp(34px,5.2vw,76px); display:grid; grid-template-columns:minmax(0,1.15fr) minmax(220px,.8fr); grid-template-rows:auto auto auto auto; column-gap:clamp(18px,4vw,58px); row-gap:8px; align-items:center; text-align:left; overflow:hidden; isolation:isolate; border:1px solid rgba(196,163,255,.2); border-radius:34px; background:radial-gradient(circle at 78% 42%,rgba(124,58,237,.22),transparent 36%),linear-gradient(125deg,rgba(24,14,39,.98),rgba(9,6,17,.98) 64%,rgba(29,13,48,.97)); box-shadow:0 28px 90px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035); }
+.hero::before { content:""; position:absolute; z-index:-1; width:clamp(260px,31vw,410px); aspect-ratio:1; right:4%; top:50%; transform:translateY(-50%); border:1px solid rgba(196,163,255,.12); border-radius:50%; box-shadow:0 0 0 28px rgba(196,163,255,.025),0 0 0 58px rgba(196,163,255,.018),0 0 95px rgba(124,58,237,.12); pointer-events:none; }
+.hero::after { content:""; position:absolute; left:0; top:13%; bottom:13%; width:3px; background:linear-gradient(transparent,#c4a3ff,#7c3aed,transparent); border-radius:0 8px 8px 0; }
+.hero .hero-eyebrow { grid-column:1; grid-row:1; display:inline-flex; width:fit-content; align-items:center; gap:8px; padding:8px 12px; margin:0 0 8px; border:1px solid rgba(196,163,255,.22); border-radius:999px; color:#e6d9ff; background:rgba(124,58,237,.12); font-size:11px; font-weight:800; letter-spacing:1.7px; text-transform:uppercase; }
+.hero .hero-eyebrow span { color:#a99aba; font-weight:700; }
+.hero h1 { grid-column:1; grid-row:2; margin:0; max-width:660px; font-size:clamp(39px,5.9vw,76px); font-weight:900; line-height:1.02; letter-spacing:-2.8px; filter:drop-shadow(0 8px 32px rgba(168,85,247,.22)); }
+.hero h1 span { display:block; color:#c4a3ff; -webkit-text-fill-color:#c4a3ff; }
+.hero .sub { grid-column:1; grid-row:3; margin:14px 0 0; max-width:590px; color:#c0b4ce; font-size:clamp(14px,1.6vw,17px); line-height:1.85; letter-spacing:0; }
+.hero .sub strong { color:#dfceff; }
+.hero .cta { grid-column:1; grid-row:4; justify-self:start; margin-top:22px; padding:15px 25px; border-radius:14px; background:linear-gradient(120deg,#7040c1,#a36dff 62%,#7c3aed); box-shadow:0 12px 32px rgba(124,58,237,.25); }
+.hero .cta:hover { transform:translateY(-3px); box-shadow:0 16px 38px rgba(124,58,237,.38); }
+.hero .logo-gigante { grid-column:2; grid-row:1 / 5; justify-self:center; position:relative; z-index:1; width:clamp(172px,21vw,258px); height:auto; aspect-ratio:1; border-radius:29%; object-fit:cover; padding:8px; margin:0; border:1px solid rgba(229,211,255,.45); background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(124,58,237,.12)); box-shadow:0 24px 70px rgba(124,58,237,.28),0 0 0 12px rgba(196,163,255,.035); cursor:pointer; user-select:none; -webkit-user-drag:none; animation:fluxLogoFloat 5s ease-in-out infinite; transition:filter .2s ease,border-color .2s ease; }
+.hero .logo-gigante:hover { filter:brightness(1.1); border-color:#e8d9ff; }
+.hero .logo-gigante:focus-visible { outline:3px solid #c4a3ff; outline-offset:7px; }
+.hero-orbita { position:absolute; right:clamp(22px,12%,145px); top:50%; width:clamp(205px,27vw,328px); aspect-ratio:1; border:1px dashed rgba(196,163,255,.22); border-radius:50%; transform:translateY(-50%) rotate(-18deg); pointer-events:none; animation:fluxOrbita 30s linear infinite; }
+.hero-sticker { position:absolute; right:clamp(16px,8%,108px); bottom:clamp(16px,8%,64px); z-index:2; display:flex; flex-direction:column; gap:1px; padding:12px 15px; border-radius:14px; border:1px solid rgba(231,214,255,.2); background:rgba(15,8,25,.88); box-shadow:0 12px 34px rgba(0,0,0,.35); transform:rotate(5deg); pointer-events:none; }
+.hero-sticker span { font-size:10px; letter-spacing:2px; color:#d8c2ff; font-weight:900; }
+.hero-sticker strong { font-size:16px; letter-spacing:1.6px; color:#fff; }
+.hero-sticker small { font-size:8px; letter-spacing:1px; color:#a99aba; }
+@keyframes fluxLogoFloat { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-10px) rotate(-2deg)} }
+@keyframes fluxOrbita { from{transform:translateY(-50%) rotate(0)} to{transform:translateY(-50%) rotate(360deg)} }
+@keyframes fluxLogoTap { 0%{transform:scale(1) rotate(2deg)} 40%{transform:scale(.92) rotate(-5deg)} 100%{transform:scale(1) rotate(2deg)} }
+@keyframes fluxLogoBoost { 0%,100%{filter:brightness(1);box-shadow:0 24px 70px rgba(124,58,237,.3),0 0 0 12px rgba(196,163,255,.04)} 50%{filter:brightness(1.45);box-shadow:0 0 65px rgba(196,163,255,.8),0 0 0 22px rgba(124,58,237,.16)} }
+.hero .logo-gigante.logo-tap { animation:fluxLogoTap .24s ease; }
+.hero .logo-gigante.logo-boost { animation:fluxLogoBoost .75s ease-in-out 3; }
+.flux-secret-toast { position:fixed; left:50%; bottom:24px; z-index:99999; max-width:calc(100vw - 28px); padding:12px 18px; border:1px solid rgba(214,191,255,.35); border-radius:14px; background:rgba(17,9,29,.96); color:#f5edff; box-shadow:0 16px 55px rgba(0,0,0,.4),0 0 32px rgba(124,58,237,.25); font-size:13px; font-weight:800; text-align:center; opacity:0; transform:translate(-50%,16px); pointer-events:none; transition:opacity .2s ease,transform .2s ease; }
+.flux-secret-toast.visible { opacity:1; transform:translate(-50%,0); }
+.sellos { max-width:1220px; margin:26px auto 0; gap:16px; }
+.sello { border-color:rgba(196,163,255,.14); background:linear-gradient(145deg,rgba(24,14,39,.76),rgba(12,8,20,.82)); border-radius:20px; padding:24px; transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+.sello:hover { transform:translateY(-4px); border-color:rgba(196,163,255,.32); box-shadow:0 14px 40px rgba(0,0,0,.22); }
+.sello .icono { background:rgba(124,58,237,.12); border:1px solid rgba(196,163,255,.12); border-radius:14px; }
+.sello .icono svg { stroke:#c4a3ff; }
+@media (max-width:760px) {
+ .hero { grid-template-columns:1fr; grid-template-rows:auto auto auto auto auto; text-align:center; padding:28px 22px 32px; gap:6px; border-radius:26px; }
+ .hero::before { width:230px; right:50%; top:15px; transform:translateX(50%); }
+ .hero::after { top:10%; bottom:10%; }
+ .hero .logo-gigante { grid-column:1; grid-row:1; justify-self:center; width:138px; height:auto; margin:0 0 12px; }
+ .hero .hero-eyebrow { grid-column:1; grid-row:2; justify-self:center; margin-bottom:10px; font-size:9px; letter-spacing:1px; }
+ .hero h1 { grid-column:1; grid-row:3; font-size:clamp(36px,9vw,56px); letter-spacing:-1.8px; }
+ .hero .sub { grid-column:1; grid-row:4; margin:12px auto 0; }
+ .hero .cta { grid-column:1; grid-row:5; justify-self:center; width:100%; justify-content:center; margin-top:18px; }
+ .hero-orbita { width:174px; right:50%; top:91px; transform:translate(50%,-50%); }
+ .hero-sticker { right:calc(50% - 100px); bottom:auto; top:116px; transform:rotate(5deg) scale(.78); }
+ .sellos { margin-top:20px; }
+}
+@media (max-width:400px) {
+ .hero { padding:24px 15px 28px; }
+ .hero .logo-gigante { width:122px; }
+ .hero-sticker { right:8px; top:108px; }
+ .hero .hero-eyebrow span { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .hero-orbita,.hero .logo-gigante { animation:none!important; }
+ .hero,.sello,.hero .cta { transition:none!important; }
+}
+
 </style>
 <link rel="icon" href="assets/flux-store.svg" type="image/svg+xml"><meta name="theme-color" content="#10091a"></head>
 <body>
@@ -1066,7 +1137,7 @@
     <div class="marca" onclick="irA('home')">
       <img src="assets/flux-store.svg" alt="FLUX STORE">
       <div class="nombre">FLUX STORE
-        <small>CATÁLOGO DIGITAL</small>
+        <small>TU MUNDO DIGITAL</small>
       </div>
     </div>
     <nav class="enlaces">
@@ -1089,28 +1160,32 @@
   <!-- ===== INICIO ===== -->
   <section id="seccion-home" class="seccion activa">
     <div class="hero">
-      <img class="logo-gigante" src="assets/flux-store.svg" alt="FLUX STORE">
-      <h1>FLUX STORE</h1>
-      <p class="sub"><strong>tu tienda digital</strong> · Streaming, gaming y productos digitales</p>
-      <button class="cta" onclick="irA('productos')">Ver productos
+      <p class="hero-eyebrow">✦ FLUX STORE <span> / DIGITAL GOODS</span></p>
+      <h1>Tu mundo digital,<br><span>a tu manera.</span></h1>
+      <p class="sub">Gaming, streaming y upgrades para tu día a día. Explora el catálogo y consulta cada pedido con nuestro equipo.</p>
+      <button class="cta" onclick="irA('productos')">Explorar catálogo
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
+      <img id="flux-logo-principal" class="logo-gigante" src="assets/flux-store.svg" alt="Logo principal de FLUX STORE" title="Haz clic 10 veces para desbloquear una sorpresa" role="button" tabindex="0" aria-label="Logo de FLUX STORE. Haz clic diez veces para activar una sorpresa." onclick="clicLogoPrincipal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();clicLogoPrincipal()}">
+      <div class="hero-orbita" aria-hidden="true"></div>
+      <div class="hero-sticker" aria-hidden="true"><span>FLUX</span><strong>SELECT</strong><small>EDICIÓN DIGITAL</small></div>
     </div>
+    <div id="flux-secret-toast" class="flux-secret-toast" role="status" aria-live="polite"></div>
     <div class="sellos">
       <div class="sello">
         <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h3>Catálogo seleccionado</h3>
-        <p>Consulta disponibilidad, precio y condiciones antes de cada pedido.</p>
+        <h3>Compra con claridad</h3>
+        <p>Consulta el precio, el stock y las condiciones antes de confirmar un pedido.</p>
       </div>
       <div class="sello">
         <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
-        <h3>Soporte por Discord</h3>
-        <p>Consulta dudas y pedidos directamente en nuestro Discord.</p>
+        <h3>Atención directa</h3>
+        <p>Resuelve dudas y revisa tu pedido con el equipo de FLUX STORE en Discord.</p>
       </div>
       <div class="sello">
         <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <h3>En español</h3>
-        <p>Atención en español por nuestra comunidad.</p>
+        <p>Información y asistencia en español, de principio a fin.</p>
       </div>
     </div>
     <button class="admin-oculto" title="Administración" onclick="pedirClave()">⚙</button>
@@ -1333,10 +1408,38 @@
 </div>
 
 <script>
+  /* Interacción secreta de portada: diez clics en el logo */
+  let fluxLogoClickCount = 0;
+  let fluxToastTimer = null;
+  let fluxBoostTimer = null;
+  function clicLogoPrincipal() {
+    const logo = document.getElementById("flux-logo-principal");
+    const toast = document.getElementById("flux-secret-toast");
+    if (!logo || !toast) return;
+    fluxLogoClickCount += 1;
+    logo.classList.remove("logo-tap");
+    void logo.offsetWidth;
+    logo.classList.add("logo-tap");
+    toast.textContent = fluxLogoClickCount < 10
+      ? "FLUX BOOST · " + fluxLogoClickCount + "/10 clics"
+      : "✦ ¡FLUX BOOST DESBLOQUEADO! ✦";
+    toast.classList.add("visible");
+    if (fluxToastTimer) clearTimeout(fluxToastTimer);
+    fluxToastTimer = setTimeout(() => toast.classList.remove("visible"), fluxLogoClickCount === 10 ? 2400 : 850);
+    if (fluxLogoClickCount >= 10) {
+      fluxLogoClickCount = 0;
+      logo.classList.remove("logo-boost");
+      void logo.offsetWidth;
+      logo.classList.add("logo-boost");
+      if (fluxBoostTimer) clearTimeout(fluxBoostTimer);
+      fluxBoostTimer = setTimeout(() => logo.classList.remove("logo-boost"), 2400);
+    }
+  }
+
   /* ============ Datos ============ */
-  const LK_PRODUCTOS = "temiShopProductos";
-  const LK_CONFIG    = "temiShopConfig";
-  const LK_FAQS      = "temiShopFaqs";
+  const LK_PRODUCTOS = "fluxStoreProductos";
+  const LK_CONFIG    = "fluxStoreConfig";
+  const LK_FAQS      = "fluxStoreFaqs";
   const CONFIG_DEF = { password: "", adminEmail: "", adminPassword: "", whatsapp: "", telegram: "", discord: "https://discord.gg/fluxstore" };
 
   const DATOS_SEMILLA = {"config":{"whatsapp":"","telegram":"","discord":"https://discord.gg/fluxstore"},"productos":[{"id":"flux-youtube","nombre":"YouTube Premium","descripcion":"Consulta planes, duración y disponibilidad antes de realizar el pedido.","imagen":"https://cdn.simpleicons.org/youtube/FF0033","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## YouTube Premium\n- Consulta la duración disponible.\n- Confirma compatibilidad y condiciones.\n- Solo se atienden opciones y códigos autorizados.","tipos":[]},{"id":"flux-netflix","nombre":"Netflix Premium","descripcion":"Películas y series. Consulta disponibilidad, duración y condiciones.","imagen":"https://cdn.simpleicons.org/netflix/E50914","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Netflix Premium\n- Consulta el plan y la duración disponibles.\n- Confirma compatibilidad y condiciones antes de pedir.\n- Se priorizan suscripciones y códigos autorizados.","tipos":[]},{"id":"flux-spotify","nombre":"Spotify Premium","descripcion":"Música y podcasts con las funciones del plan Premium disponible.","imagen":"https://cdn.simpleicons.org/spotify/1DB954","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Spotify Premium\n- Consulta la duración y modalidad disponible.\n- Confirma compatibilidad y las condiciones del plan.\n- No compartas contraseñas por el chat.","tipos":[]},{"id":"flux-hbomax","nombre":"HBO Max","descripcion":"Catálogo de películas y series. Consulta la opción disponible.","imagen":"https://cdn.simpleicons.org/max/7C3AED","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## HBO Max\n- Consulta duración y disponibilidad.\n- Confirma las condiciones antes de comprar.","tipos":[]},{"id":"flux-disney","nombre":"Disney+","descripcion":"Entretenimiento y series. Consulta duración y disponibilidad.","imagen":"https://cdn.simpleicons.org/disneyplus/113CCF","categoria":"streaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Disney+\n- Consulta duración y disponibilidad.\n- Confirma el plan y las condiciones de uso.","tipos":[]},{"id":"flux-minecraft","nombre":"Minecraft Premium Java & Bedrock","descripcion":"Consulta edición, licencia, región y disponibilidad antes de pedir.","imagen":"https://cdn.simpleicons.org/minecraft/62B47A","categoria":"minecraft","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Minecraft Premium\n- Confirma las ediciones incluidas.\n- Verifica compatibilidad regional y requisitos.\n- Adquiere licencias o códigos autorizados.","tipos":[]},{"id":"flux-nitro-basic","nombre":"Discord Nitro Basic","descripcion":"Consulta disponibilidad y elegibilidad antes de canjear.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Basic\n- Consulta duración y método de canje.\n- Confirma elegibilidad y condiciones antes de pedir.","tipos":[]},{"id":"flux-nitro-procode","nombre":"Discord Nitro Procode","descripcion":"Consulta el tipo de código, duración y condiciones de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro Procode\n- Confirma duración y restricciones del código.\n- Los códigos deben proceder de una fuente autorizada.","tipos":[]},{"id":"flux-nitro-3m","nombre":"Discord Nitro · 3 meses","descripcion":"Consulta disponibilidad, elegibilidad y método de canje.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Nitro · 3 meses\n- Confirma la duración y elegibilidad.\n- Consulta las condiciones de canje.","tipos":[]},{"id":"flux-booster","nombre":"Discord Server Boost","descripcion":"Elige de 2 a 24 boosters. El total se calcula según el precio configurado por booster.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Discord Server Boost\nElige la cantidad en el selector. El precio se configura como importe por booster; el total se calcula automáticamente.\n\nConfirma disponibilidad y condiciones antes de pagar.","tipos":[],"selector":{"kind":"boosters","min":2,"max":24,"step":1}},{"id":"flux-robux","nombre":"Robux","descripcion":"Elige de 100 a 10.000 Robux. Configura el precio por cada 100 Robux.","imagen":"https://cdn.simpleicons.org/roblox/FFFFFF","categoria":"gaming","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Robux\nSelecciona la cantidad para ver el total estimado. El precio del panel equivale a cada bloque de 100 Robux.\n\nVerifica las reglas oficiales de Roblox y utiliza métodos de compra permitidos.","tipos":[],"selector":{"kind":"robux","min":100,"max":10000,"step":100}},{"id":"flux-promo","nombre":"Promoción de servidor","descripcion":"Consulta campañas legítimas para dar a conocer tu comunidad.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"servicios","visible":true,"conTipos":false,"precio":null,"stock":true,"caracteristicas":"## Promoción de servidor\n- Publicaciones y anuncios de tu comunidad.\n- Promoción legítima de eventos y contenido.\n- No incluye bots ni miembros falsos.","tipos":[]},{"id":"flux-old-nitro-accounts","nombre":"Cuentas con Nitro antiguas","descripcion":"No disponible. Consulta alternativas autorizadas de suscripción o códigos.","imagen":"https://cdn.simpleicons.org/discord/5865F2","categoria":"discord","visible":false,"conTipos":false,"precio":null,"stock":false,"caracteristicas":"## No disponible\nNo se publican cuentas de terceros. Consulta opciones de suscripción o códigos autorizados.","tipos":[]}],"faqs":[{"id":"flux-faq-buy","pregunta":"¿Cómo realizo una compra?","respuesta":"Abre un producto, revisa sus detalles y pulsa Comprar. Se abrirá nuestro Discord para consultar el pedido por ticket."},{"id":"flux-faq-price","pregunta":"¿Cómo se calcula el precio de boosters y Robux?","respuesta":"En boosters se multiplica la cantidad por el precio de un booster; en Robux se calcula el precio proporcional por cada 100 Robux."},{"id":"flux-faq-delivery","pregunta":"¿Cuándo recibo mi pedido?","respuesta":"La disponibilidad y los tiempos dependen del producto. Confirma los detalles por Discord antes de pagar."},{"id":"flux-faq-security","pregunta":"¿Debo compartir mi contraseña?","respuesta":"No compartas contraseñas ni códigos personales de acceso en tickets. Consulta métodos de canje autorizados."}]};
@@ -1346,7 +1449,7 @@
   let faqs      = cargar(LK_FAQS, JSON.parse(JSON.stringify(DATOS_SEMILLA.faqs)));
 
   /* ============ Datos publicos (datos.json) ============ */
-  const LK_VERSION = "temiShopVersion";
+  const LK_VERSION = "fluxStoreVersion";
 
   function versionPublicada(datos) {
     if (!datos || typeof datos !== "object") return null;
@@ -1394,8 +1497,8 @@
   }
 
   /* ============ Moneda (€ / $) ============ */
-  const LK_MONEDA = "temiShopMoneda";
-  const LK_TASA   = "temiShopTasa";
+  const LK_MONEDA = "fluxStoreMoneda";
+  const LK_TASA   = "fluxStoreTasa";
   const TASA_DEF  = 1.09;                 /* 1 € → $ (si no hay conexión) */
   let moneda  = cargar(LK_MONEDA, "EUR"); /* "EUR" | "USD" */
   let tasaUSD = parseFloat(cargar(LK_TASA, TASA_DEF)) || TASA_DEF;
@@ -1830,7 +1933,7 @@ function precioMinimo(producto) {
   }
 
   /* ============ Acceso administrador ============ */
-  const LK_ADMIN = "temiShopAdmin"; const LK_ADMIN_PASSWORD = "fluxStoreAdminPassword";
+  const LK_ADMIN = "fluxStoreAdmin"; const LK_ADMIN_PASSWORD = "fluxStoreAdminPassword";
   let adminActivo = false;
 
   function esAdmin() { return !!adminActivo; }
