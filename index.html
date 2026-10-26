@@ -1258,7 +1258,7 @@ header { background: rgba(9,5,16,.88); border-bottom: 1px solid rgba(196,163,255
 <section class="flux-secret-zone" aria-label="Secreto de FLUX STORE">
   <p class="flux-secret-kicker">FIN DEL RECORRIDO <span>✦</span></p>
   <p class="flux-secret-copy">¿Llegaste hasta abajo? Aquí queda un pequeño secreto.</p>
-  <img id="flux-logo-principal" class="flux-secret-logo" src="assets/flux-store.svg" alt="Logo secreto de FLUX STORE" title="Haz clic 10 veces para desbloquear FLUX BOOST" role="button" tabindex="0" aria-label="Logo secreto de FLUX STORE. Haz clic diez veces para activar FLUX BOOST." onclick="clicLogoPrincipal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();clicLogoPrincipal()}">
+  <img id="flux-logo-principal" class="flux-secret-logo" src="assets/flux-store.svg" alt="Logo secreto de FLUX STORE" title="Haz clic 10 veces para abrir administración" role="button" tabindex="0" aria-label="Logo secreto de FLUX STORE. Haz clic diez veces para abrir el panel de administrador.">
   <p class="flux-secret-hint">10 clics en el logo <span>·</span> FLUX BOOST</p>
   <div id="flux-secret-toast" class="flux-secret-toast" role="status" aria-live="polite"></div>
 </section>
@@ -2751,6 +2751,87 @@ function precioMinimo(producto) {
   renderFaqPublico();
   renderProductos();
   cargarDatosPublicos();
+</script>
+<script>
+/* Acceso de administración desacoplado del resto de la navegación */
+(function () {
+  const logo = document.getElementById("flux-logo-principal");
+  const toast = document.getElementById("flux-secret-toast");
+  if (!logo || !toast) return;
+
+  let clicks = 0;
+  let toastTimer = null;
+  let boostTimer = null;
+
+  function abrirPanelDirecto() {
+    try {
+      adminActivo = true;
+      guardar(LK_ADMIN, true);
+    } catch (e) {
+      /* La vista se abre aunque otro código de inicialización falle. */
+    }
+
+    const overlay = document.getElementById("overlay-clave");
+    if (overlay) overlay.classList.remove("abierto");
+
+    document.querySelectorAll("main .seccion").forEach(function (seccion) {
+      seccion.classList.remove("activa");
+    });
+    const panel = document.getElementById("seccion-admin");
+    if (panel) panel.classList.add("activa");
+
+    ["home", "productos", "soporte", "admin"].forEach(function (nombre) {
+      const boton = document.getElementById("nav-" + nombre);
+      if (!boton) return;
+      boton.classList.toggle("activo", nombre === "admin");
+      if (nombre === "admin") boton.classList.remove("oculto");
+    });
+
+    try {
+      if (typeof renderAdmin === "function") renderAdmin();
+    } catch (e) {
+      const contenido = document.getElementById("contenido-admin");
+      if (contenido) contenido.innerHTML = '<p class="aviso">El panel se abrió, pero hubo un error al cargar sus controles. Recarga la página y vuelve a intentarlo.</p>';
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function registrarClic() {
+    clicks += 1;
+    logo.classList.remove("logo-tap");
+    void logo.offsetWidth;
+    logo.classList.add("logo-tap");
+
+    const desbloqueado = clicks >= 10;
+    toast.textContent = desbloqueado
+      ? "✦ ABRIENDO PANEL DE ADMINISTRADOR ✦"
+      : "ADMINISTRACIÓN · " + clicks + "/10 clics";
+    toast.classList.add("visible");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove("visible");
+    }, desbloqueado ? 1800 : 900);
+
+    if (!desbloqueado) return;
+    clicks = 0;
+    logo.classList.remove("logo-boost");
+    void logo.offsetWidth;
+    logo.classList.add("logo-boost");
+    if (boostTimer) clearTimeout(boostTimer);
+    boostTimer = setTimeout(function () {
+      logo.classList.remove("logo-boost");
+    }, 2400);
+    abrirPanelDirecto();
+  }
+
+  logo.addEventListener("click", registrarClic);
+  logo.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      registrarClic();
+    }
+  });
+})();
 </script>
 </body>
 </html>
